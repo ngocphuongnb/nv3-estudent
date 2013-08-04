@@ -1,0 +1,83 @@
+a.add_icon1 {
+	font-weight: bold;
+	text-decoration: underline;
+	background-color: #eaeaea;
+	border: 1px solid #acacac;
+	height: 25px;
+	display: inline-block;
+	background-position-x: 5px;
+	line-height: 25px;
+	padding: 0 10px 0 20px
+}
+a.add_icon {
+	display: inline-block;
+	line-height: 24px;
+	text-decoration: none;
+	margin-bottom: 1px;
+	border: 1px solid #C6C6C6;
+	font-weight: bold;
+	font-size: 12px;
+	background: #f5fbfe url(../images/vertical_menu_bg.jpg) no-repeat left -75px;
+	color: #cb0000;
+	padding-right: 5px;
+	text-align: right;
+	padding-left: 22px
+}
+a.add_icon:hover {
+	text-decoration: underline
+}
+.vnp-add {
+	margin: 5px 0;
+	display: block
+}
+.vnp-title {
+	font-weight: bold;
+	margin: 10px 0
+}
+ul.vnp-termlist {
+	list-style: none;
+	font-weight: bold
+}
+ul.vnp-termlist li {
+	line-height: 20px
+}
+.class-time {
+	width: 100px;
+	float: left;
+	font-weight: bold;
+	padding: 10px
+}
+.class-time label {
+	display: block;
+	line-height: 25px;
+	cursor: pointer;
+	background: #CECECE;
+	margin-top: 1px;
+	padding: 0 5px;
+}
+.class-time label:hover, .class-time-active {
+	background: #cb0000 !important;
+	color: #FFF
+}
+.class-time label > .class-time label input:checked {
+	background: #cb0000;
+	color: #FFF
+}
+.class-time .day {
+	color: #cb0000;
+	font-size: 15px;
+	text-align: center;
+	background: #B3B3B3;
+	padding: 8px 0;
+}
+.class-time:hover {
+	background: #FFF
+}
+.vnp-week {
+	font-weight: bold;
+}
+.vnp-week label {
+	margin-right: 10px;
+	cursor: pointer;
+	color: #cb0000
+}
