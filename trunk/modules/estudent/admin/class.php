@@ -18,7 +18,7 @@ $class = array(
 				'class_id' => 0,
 				'subject_id' => 0,
 				'faculty_id' => 0,
-				'teacher_id' => 0,
+				'teacher_id' => '',
 				'class_name' => '',
 				'class_code' => '',
 				'class_week' => 0,
@@ -141,7 +141,7 @@ if( $action == 'add' )
 	$xtpl->assign( 'CLASS_SLB', getTaxSelectBox( $globalTax['year'], 'class[year]', $class['year'], NULL, 'year', 'year' ) );
 	$xtpl->assign( 'CLASS', $class );
 	$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'class[faculty_id]', $class['faculty_id'] ) );
-	$xtpl->assign( 'TEACHER_SLB', getTaxSelectBox( 'teacher', 'class[teacher_id]', $class['teacher_id'] ) );
+	//$xtpl->assign( 'TEACHER_SLB', getTaxSelectBox( 'teacher', 'class[teacher_id]', $class['teacher_id'] ) );
 	$xtpl->assign( 'CLASS_TYPE_SLB', getTaxSelectBox( $globalTax['class_type'], 'class[class_type]', $class['class_type_id'], NULL, 'class_type_id', 'class_type_name' ) );
 	$xtpl->assign( 'TEST_TYPE_SLB', getTaxSelectBox( $globalTax['test_type'], 'class[test_type]', $class['test_type_id'], NULL, 'test_type_id', 'test_type_name' ) );
 	$xtpl->assign( 'WEEK_CB', getTaxCheckBox( $weeks_data, 'class[class_week]', $class['class_week'], NULL, 'value', 'label' ) );

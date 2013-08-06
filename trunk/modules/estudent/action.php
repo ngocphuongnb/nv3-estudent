@@ -126,7 +126,7 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `subject_id` mediumint(8),
   `teacher_id` mediumint(8),
   `faculty_id` mediumint(8),
-  `teacher_id` mediumint(8),
+  `teacher_id` varchar(255),
   `class_name` varchar(255),
   `class_code` varchar(255) NOT NULL,
   `class_week` varchar(255),
