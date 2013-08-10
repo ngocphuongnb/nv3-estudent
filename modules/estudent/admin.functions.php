@@ -32,7 +32,7 @@ $globalTax = $globalConfig = array();
 
 // Taxonomy data
 $globalTax['faculty'] = getFaculty();
-//$globalTax['teacher'] = getTeacher();
+$globalTax['teacher'] = getTeacher();
 $globalTax['test_type'] = getTestType();
 $globalTax['class_type'] = getClassType();
 $globalTax['year'] = getYear();

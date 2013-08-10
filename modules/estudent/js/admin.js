@@ -4,19 +4,6 @@
  * @Copyright (C) 2012 VINADES.,JSC. All rights reserved
  * @Createdate 1 - 31 - 2010 5 : 12
  */
- 
-
-Array.prototype.getUnique = function(){
-   var u = {}, a = [];
-   for(var i = 0, l = this.length; i < l; ++i){
-      if(u.hasOwnProperty(this[i])) {
-         continue;
-      }
-      a.push(this[i]);
-      u[this[i]] = 1;
-   }
-   return a;
-}
 
 function nv_chang_weight(vid) {
 	var nv_timer = nv_settimeout_disable('change_weight_' + vid, 5000);
@@ -77,21 +64,4 @@ function res_get_alias(res) {
 		document.getElementById('idalias').value = '';
 	}
 	return false;
-}
-
-function getIDs( mode, container, IDs )
-{
-	if( mode == 'teacher' || mode == 'subject' || mode == 'class' )
-	{
-		if( typeof IDs == 'undefined' ) IDs = '';
-		var _url = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax_get_item&mode=' + mode + '&container=' + container + '&listid=' + IDs;
-		nv_open_browse_file( _url, 'NVImg', '850', '600', 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' )
-	}
-}
-
-function setCookieSelected(listid)
-{
-	if( typeof listid == 'undefined' ) listid = '';
-	//alert(listid);
-	nv_setCookie(vnp_cookie_prefix + '_vnp_selected_items', listid);
 }

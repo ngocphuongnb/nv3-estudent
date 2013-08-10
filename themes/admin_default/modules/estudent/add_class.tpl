@@ -2,18 +2,15 @@
 <!-- BEGIN: select_year -->
 <strong>{LANG.select_year}</strong>
 {YEAR_SLB}
-
-<!-- BEGIN: term -->
-<div class="vnp-title">{LANG.select_term}</div>
-<ul class="vnp-termlist">
-    <!-- BEGIN: loop -->
-    <li><a class="add_icon" href="{TERM.link}" title="{TERM.term_name}">{TERM.term_name}</a></li>
-    <!-- END: loop -->
-</ul>
-<!-- END: term -->
-
+	<!-- BEGIN: term -->
+    <div class="vnp-title">{LANG.select_term}</div>
+    <ul class="vnp-termlist">
+    	<!-- BEGIN: loop -->
+        <li><a class="add_icon" href="{TERM.link}" title="{TERM.term_name}">{TERM.term_name}</a></li>
+        <!-- END: loop -->
+    </ul>
+    <!-- END: term -->
 <!-- END: select_year -->
-
 <!-- BEGIN: add -->
 <form action="{FORM_ACTION}" method="post">
 	<input name="save" type="hidden" value="1" />
@@ -39,9 +36,7 @@
         <tbody>
 			<tr>
 				<td style="width:150px"><strong>{LANG.teacher}</strong></td>
-				<td>
-                	<input type="text" value="{CLASS.teacher_id}" name="class[teacher_id]" id="class_teacher_id" maxlength="255" />
-                    <input type="button" onclick="getIDs('teacher', 'class_teacher_id', '{CLASS.teacher_id}'); return false" value="{LANG.choose_teacher}" />
+				<td>{TEACHER_SLB}</td>
 			</tr>
 		</tbody>
         <tbody>
