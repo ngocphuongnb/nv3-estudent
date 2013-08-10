@@ -49,7 +49,6 @@ $lang_module['teacher_name'] = 'Tên giảng viên';
 $lang_module['teacher_desc'] = 'Giới thiệu giảng viên';
 $lang_module['add_teacher'] = 'Thêm giảng viên';
 $lang_module['teacher'] = 'Giảng viên';
-$lang_module['choose_teacher'] = 'Chọn giảng viên';
 
 $lang_module['level_management'] = 'Quản lý hệ đào tạo';
 $lang_module['level_name'] = 'Tên hệ đào tạo';
