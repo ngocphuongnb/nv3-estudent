@@ -35,6 +35,8 @@ $lang_module['test_type'] = 'Hình thức thi';
 $lang_module['class_room'] = 'Phòng học';
 $lang_module['class_time'] = 'Giờ học';
 
+$lang_module['add_selected'] = 'Thêm mục đã chọn';
+
 $lang_module['monday'] = 'Thứ 2';
 $lang_module['tuesday'] = 'Thứ 3';
 $lang_module['wednesday'] = 'Thứ 4';
@@ -49,6 +51,7 @@ $lang_module['teacher_name'] = 'Tên giảng viên';
 $lang_module['teacher_desc'] = 'Giới thiệu giảng viên';
 $lang_module['add_teacher'] = 'Thêm giảng viên';
 $lang_module['teacher'] = 'Giảng viên';
+$lang_module['choose_teacher'] = 'Chọn giảng viên';
 
 $lang_module['level_management'] = 'Quản lý hệ đào tạo';
 $lang_module['level_name'] = 'Tên hệ đào tạo';
@@ -75,6 +78,7 @@ $lang_module['subject_desc'] = 'Giới thiệu môn học';
 $lang_module['add_subject'] = 'Thêm môn học';
 $lang_module['practice_require'] = 'Yêu cầu thực hành';
 $lang_module['clpart'] = 'Số tiết';
+$lang_module['choose_subject'] = 'Chọn môn học';
 
 $lang_module['faculty_management'] = 'Quản lý khoa viện';
 $lang_module['faculty_name'] = 'Tên khoa viện';
