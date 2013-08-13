@@ -20,6 +20,7 @@ $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $la
 $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_class`;";
 $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_class_type`;";
 $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_test_type`;";
+$sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_base_class`;";
 
 $sql_create_module = $sql_drop_module;
 
@@ -144,6 +145,25 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`class_id`),
   UNIQUE KEY `class_name` (`class_name`)
+) ENGINE=MyISAM";
+
+$sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_base_class` (
+  `base_class_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `faculty_id` mediumint(8) NOT NULL DEFAULT '0',
+  `level_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `course_id` varchar(255) NOT NULL,
+  `base_class_name` varchar(255) NOT NULL,
+  `base_class_alias` varchar(255) NOT NULL,
+  `base_class_desc` mediumtext NOT NULL,
+  `teacher_id` varchar(255) NOT NULL,
+  `number_student` int(11) NOT NULL DEFAULT '0',
+  `weight` smallint(4) NOT NULL DEFAULT '0',
+  `admin_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `add_time` int(11) NOT NULL DEFAULT '0',
+  `edit_time` int(11) NOT NULL DEFAULT '0',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`base_class_id`),
+  UNIQUE KEY `base_class_alias` (`base_class_alias`)
 ) ENGINE=MyISAM";
 
 ?>
