@@ -146,6 +146,7 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   PRIMARY KEY (`class_id`),
   UNIQUE KEY `class_name` (`class_name`)
 ) ENGINE=MyISAM";
+
 $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_base_class` (
   `base_class_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `faculty_id` mediumint(8) NOT NULL DEFAULT '0',
