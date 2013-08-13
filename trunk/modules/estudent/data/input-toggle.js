@@ -12,7 +12,9 @@
 
         var settings = $.extend({
             childInput         	: '',
+			dataAttribute		: '',
 			storageVar			: 'checkedInputs',
+			titleData			: '',
 			featureAction		: [],
 			callBackFunction	: '',
 			enableCookie		: true,
@@ -53,8 +55,8 @@
 			{
 				$('input#' + toggleAllID).removeAttr('checked');
 			}
-			if( $(this).is(':checked') ) var obj = 'add_' + $(this).val();
-			else var obj = 'remove_' + $(this).val();
+			if( $(this).is(':checked') ) var obj = 'add_' + $(this).val() + '_' + $(this).attr(settings.dataAttribute);
+			else var obj = 'remove_' + $(this).val() + '_' + $(this).attr(settings.dataAttribute);
 			
 			updateCheckedList(obj);
         });
@@ -62,29 +64,47 @@
 		function updateCheckedList(obj)
 		{
 			var _checkedInputs = new Array();
+			var _checkedTitle = new Array();
 
-			if( settings.enableCookie && typeof obj !== 'undefined' )
+			if( settings.enableCookie )
 			{
-				var _checkedList = getCookie(settings.cookieKey);
-				if( obj == 'add' || obj == 'remove' )
+				if( obj !== 'start' )
 				{
-					$(settings.childInput).each(function() {
-						_checkedInputs.push( $(this).val() );
-					});
-					withCookie( obj, String( arrayUnique(_checkedInputs)) );
+					if( obj == 'add' || obj == 'remove' )
+					{
+						$(settings.childInput).each(function() {
+							_checkedInputs.push( $(this).val() );
+							if( settings.dataAttribute != '' ) _checkedTitle.push($(this).attr(settings.dataAttribute));
+						});		
+						withCookie( obj, String( arrayUnique(_checkedInputs)), String( arrayUnique(_checkedTitle)) );
+					}
+					else
+					{
+						obj = obj.split('_');
+						if( obj[0] == 'add' || obj[0] == 'remove' )
+						{
+							if( typeof obj[1] !== 'undefined' )
+							{
+								withCookie( obj[0], String( obj[1]), String( obj[2]) );
+							}
+						}
+					}
+					window[settings.storageVar] = String( getCookie(settings.cookieKey) );
+					if( settings.dataAttribute != '' )
+					{
+						window[settings.titleData] = String( getCookie(settings.cookieKey + '_title') );
+					}
 				}
 				else
 				{
-					obj = obj.split('_');
-					if( obj[0] == 'add' || obj[0] == 'remove' )
+					setCookie(settings.cookieKey, '');
+					setCookie(settings.cookieKey + '_title', '');
+					window[settings.storageVar] = String( getCookie(settings.cookieKey) );
+					if( settings.dataAttribute != '' )
 					{
-						if( typeof obj[1] !== 'undefined' )
-						{
-							withCookie( obj[0], String( obj[1]) );
-						}
+						window[settings.titleData] = String( getCookie(settings.cookieKey + '_title') );
 					}
 				}
-				window[settings.storageVar] = String( getCookie(settings.cookieKey) );
 			}
 			else
 			{
@@ -95,6 +115,10 @@
 					}
 				});
 				window[settings.storageVar] = String( arrayUnique(_checkedInputs) );
+				if( settings.dataAttribute != '' )
+				{
+					window[settings.titleData] = String( getCookie(settings.cookieKey + '_title') );
+				}
 			}
 			if( settings.callBackFunction != '' )
 			{
@@ -102,7 +126,7 @@
 			}
 		}
 		
-		function withCookie( action, value)
+		function withCookie( action, value, title)
 		{
 			if( typeof value !== 'undefined' && value != '' )
 			{
@@ -112,11 +136,26 @@
 				var _checkedArray = new Array();
 				_checkedArray = _checkedList.split(',');
 				value = value.split(',');
+				
+				if( settings.dataAttribute != '' )
+				{
+					var _checked_title_List = getCookie(settings.cookieKey + '_title');
+					if( _checked_title_List == null ) _checked_title_List = '';
+					else _checked_title_List = String(_checked_title_List);
+					var _checked_title_Array = new Array();
+					_checked_title_Array = _checked_title_List.split(',');
+					title = title.split(',');
+				}
+				
 				if( action == 'add' )
 				{
 					for( var i = 0; i < value.length; i++ )
 					{
 						_checkedArray.push(value[i]);
+						if( settings.dataAttribute != '' )
+						{
+							_checked_title_Array.push(title[i]);
+						}
 					}
 				}
 				else if( action == 'remove' )
@@ -125,11 +164,24 @@
 					{
 						var removeIndex = _checkedArray.indexOf(value[i]);
 						_checkedArray.splice(removeIndex, 1);
+						
+						if( settings.dataAttribute != '' )
+						{
+							var remove_title_Index = _checked_title_Array.indexOf(title[i]);
+							_checked_title_Array.splice(remove_title_Index, 1);
+						}
 					}
 				}
 				_checkedArray = arrayUnique(_checkedArray);
 				_checkedList = _checkedArray.join(',');
 				setCookie(settings.cookieKey, _checkedList);
+				
+				if( settings.dataAttribute != '' )
+				{
+					_checked_title_Array = arrayUnique(_checked_title_Array);
+					_checked_title_List = _checked_title_Array.join(',');
+					setCookie(settings.cookieKey + '_title', _checked_title_List);
+				}
 			}
 		}
 		//setCookie(settings.cookieKey, '1,2,3,4,5');
@@ -184,6 +236,6 @@
 			return a;
 		}
 				
-		return updateCheckedList();
+		return updateCheckedList('start');
     }
 }(jQuery));

@@ -18,34 +18,60 @@
 <form action="{FORM_ACTION}" method="post">
 	<input name="save" type="hidden" value="1" />
 	<table class="tab1">
+    	<tbody>
+			<tr>
+				<td style="width:150px"><strong>{LANG.select_term}</strong></td>
+				<td>{TERM_SLB}</td>
+			</tr>
+		</tbody>
     	<tbody class="second">
 			<tr>
 				<td style="width:150px"><strong>{LANG.subject}</strong></td>
                 <td>
-                	<input type="text" value="{CLASS.subject_id}" name="class[subject_id]" id="class_subject_id" maxlength="255" />
+                	<input type="hidden" value="{CLASS.subject_id}" name="class[subject_id]" id="class_subject_id" maxlength="255" />
                     <input type="button" onclick="getIDs('subject', 'class_subject_id', '{CLASS.subject_id}'); return false" value="{LANG.choose_subject}" />
-			</tr>
+                    
+                    <ul id="class_subject_id_title" class="selected-title">
+                    {CLASS.subject_title}
+                    </ul>
+                    
+			</td></tr>
 		</tbody>
-		<tbody>
+        
+        <tbody>
+			<tr>
+				<td style="width:150px"><strong>{LANG.teacher}</strong></td>
+				<td>
+                	<input type="hidden" value="{CLASS.teacher_id}" name="class[teacher_id]" id="class_teacher_id" maxlength="255" />
+                    <input type="button" onclick="getIDs('teacher', 'class_teacher_id', '{CLASS.teacher_id}'); return false" value="{LANG.choose_teacher}" />
+                    
+                    <ul id="class_teacher_id_title" class="selected-title">
+                    {CLASS.teacher_title}
+                    </ul>
+			</td></tr>
+		</tbody>
+        
+		<tbody class="second">
 			<tr>
 				<td style="width:150px"><strong>{LANG.class_name}</strong></td>
 				<td><input class="txt-half" type="text" value="{CLASS.class_name}" name="class[class_name]" id="class_name" maxlength="255" /></td>
 			</tr>
 		</tbody>
+        
+        <tbody>
+			<tr>
+				<td style="width:150px"><strong>{LANG.number_student}</strong></td>
+				<td><input class="txt-half" type="number" value="{CLASS.number_student}" name="class[number_student]" id="class_number_student" maxlength="255" /></td>
+			</tr>
+		</tbody>
+        
 		<tbody class="second">
 			<tr>
 				<td style="width:150px"><strong>{LANG.faculty}</strong></td>
 				<td>{FACULTY_SLB}</td>
 			</tr>
 		</tbody>
-        <tbody>
-			<tr>
-				<td style="width:150px"><strong>{LANG.teacher}</strong></td>
-				<td>
-                	<input type="text" value="{CLASS.teacher_id}" name="class[teacher_id]" id="class_teacher_id" maxlength="255" />
-                    <input type="button" onclick="getIDs('teacher', 'class_teacher_id', '{CLASS.teacher_id}'); return false" value="{LANG.choose_teacher}" />
-			</tr>
-		</tbody>
+        
         <tbody>
 			<tr>
 				<td style="width:150px"><strong>{LANG.class_code}</strong></td>
@@ -62,7 +88,7 @@
 			<tr>
 				<td style="width:150px"><strong>{LANG.class_time}</strong></td>
 				<td>
-                	{WEEK_DATA}
+                	{CLASS.class_time}
                 </td>
 			</tr>
 		</tbody>
@@ -99,7 +125,7 @@
 $(document).ready(function(e) {
     $('.class-time input:checked').parent().addClass('class-time-active');
 	$('.class-time input').click(function(e) {
-        $('input:checked' ).parent().addClass('class-time-active');
+        $('.class-time input:checked' ).parent().addClass('class-time-active');
 		if( $( this ).is(':not(:checked)') )
 		{
 			$(this).parent().removeClass('class-time-active');

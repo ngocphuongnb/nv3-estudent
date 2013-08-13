@@ -15,9 +15,13 @@ $mode = $nv_Request->get_string( 'mode', 'post,get', '' );
 $container = $nv_Request->get_string( 'container', 'post,get', '' );
 $listid = $nv_Request->get_string( 'listid', 'post,get', '' );
 
-if( !empty( $listid ) )
+if( !$nv_Request->isset_request( 'search', 'get' )  )
 {
-	$nv_Request->set_Cookie( 'vnp_selected_items_' . $mode, $listid, NV_LIVE_COOKIE_TIME, false );
+	if( !empty( $listid ) )
+	//if(0)
+	{
+		$nv_Request->set_Cookie( 'vnp_selected_items_' . $mode, $listid, NV_LIVE_COOKIE_TIME, false );
+	}
 }
 else 
 {
@@ -102,6 +106,7 @@ if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
 		unset( $_string_query['query_key'] );
 		unset( $_string_query['table'] );
 		unset( $_string_query['page'] );
+		unset( $_string_query['listid'] );
 		
 		foreach( $_string_query as $_query_key => $_query_value )
 		{
@@ -136,7 +141,7 @@ if( $db->sql_numrows( $result ) > 0 )
 		$xtpl->parse( 'main.row' );
 		$i++;
 	}
-	if( sizeof( $listid ) >= $i ) $xtpl->assign( 'CHECK_ALL', 'checked="checked"' );
+	if( sizeof( $listid ) >= $i+1 ) $xtpl->assign( 'CHECK_ALL', 'checked="checked"' );
 	else $xtpl->assign( 'CHECK_ALL', '' );
 }
 $generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );

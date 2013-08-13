@@ -29,21 +29,21 @@ if( !empty( $class['class_time'] ) && is_array( $class['class_time'] ) )
 	}
 	$class['class_time'] = implode(',', $classTime);
 }
-p($class);
 
 if( $classid )
 {
 	$sql = "UPDATE`" . NV_PREFIXLANG . "_" . $module_data . "_class` SET
-			`subject_id` =  " . intval( $class['subject_id'] ) . ",
+			`term_id` =  " . intval( $class['term_id'] ) . ",
+			`subject_id` =  " . $db->dbescape( $class['subject_id'] ) . ",
 			`faculty_id` =  " . intval( $class['faculty_id'] ) . ",
-			`teacher_id` =  " . intval( $class['teacher_id'] ) . ",
+			`teacher_id` =  " . $db->dbescape( $class['teacher_id'] ) . ",
 			`class_name` = " . $db->dbescape( $class['class_name'] ) . ",
 			`class_code` = " . $db->dbescape( $class['class_code'] ) . ",
 			`class_week` = " . $db->dbescape( $class['class_week'] ) . ",
 			`class_time` = " . $db->dbescape( $class['class_time'] ) . ",
 			`class_room` = " . $db->dbescape( $class['class_room'] ) . ",
-			`class_type_id` = " . intval( $class['class_type_id'] ) . ",
-			`test_type_id` = " . intval( $class['test_type_id'] ) . ",
+			`class_type_id` = " . intval( $class['class_type'] ) . ",
+			`test_type_id` = " . intval( $class['test_type'] ) . ",
 			`number_student` = " . intval( $class['number_student'] ) . ",
 			`edit_time`=" . NV_CURRENTTIME . " 
 	WHERE `class_id` =" . $classid;
@@ -53,16 +53,17 @@ else
 {
 	$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_class` VALUES (
             NULL,
-			" . intval( $class['subject_id'] ) . ",
+			" . intval( $class['term_id'] ) . ",
+			" . $db->dbescape( $class['subject_id'] ) . ",
+			" . $db->dbescape( $class['teacher_id'] ) . ",
 			" . intval( $class['faculty_id'] ) . ",
-			" . intval( $class['teacher_id'] ) . ",
 			" . $db->dbescape( $class['class_name'] ) . ",
 			" . $db->dbescape( $class['class_code'] ) . ",
 			" . $db->dbescape( $class['class_week'] ) . ",
 			" . $db->dbescape( $class['class_time'] ) . ",
 			" . $db->dbescape( $class['class_room'] ) . ",
-			" . intval( $class['class_type_id'] ) . ",
-			" . intval( $class['test_type_id'] ) . ",
+			" . intval( $class['class_type'] ) . ",
+			" . intval( $class['test_type'] ) . ",
 			0,
 			0,
 			" . intval( $class['number_student'] ) . ",

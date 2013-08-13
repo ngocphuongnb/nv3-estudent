@@ -123,14 +123,15 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
 
 $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_class` (
   `class_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `subject_id` mediumint(8),
-  `teacher_id` mediumint(8),
+  `term_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `subject_id` varchar(255),
+  `teacher_id` varchar(255),
   `faculty_id` mediumint(8),
   `class_name` varchar(255),
   `class_code` varchar(255) NOT NULL,
   `class_week` varchar(255),
   `class_time` varchar(255),
-  `class_room` int(11) NOT NULL DEFAULT '0',
+  `class_room` varchar(255),
   `class_type_id` int(11) NOT NULL DEFAULT '0',
   `test_type_id` int(11) NOT NULL DEFAULT '0',
   `enter_mark` tinyint(1) unsigned NOT NULL DEFAULT '0',

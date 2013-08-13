@@ -53,13 +53,13 @@
         <button id="vnp-add" onclick="insertToPost('{SEARCH.container}', checkedInputs)">{LANG.add_selected}</button>
         <table class="tab1">
             <thead>
-            	<td style="width: 30px"><input id="toggle-all" value="1" type="checkbox" {CHECK_ALL} /></td>
+            	</thead><td style="width: 30px"><input id="toggle-all" value="1" type="checkbox" {CHECK_ALL} /></td>
                 <td></td>
             </thead>
             <!-- BEGIN: row -->
             <tbody class="{ROW.class}">
                 <tr>
-                	<td><input type="checkbox" {ROW.check} class="item-toggle" value="{ROW.id}" /></td>
+                	<td><input type="checkbox" {ROW.check} data-title="{ROW.id} - {ROW.name}" class="item-toggle" value="{ROW.id}" /></td>
                     <td><strong>{ROW.name}</strong></td>   
                 </tr>
             </tbody>
@@ -81,12 +81,15 @@
         </center>
         <script type="text/javascript">
 		$(document).ready(function() {
-			var checkedInputs = new Array();
+			var checkedInputs = '';
+			var titleData = '';
 			$('#toggle-all').InputToggle({
-				childInput: '.item-toggle', 
+				childInput: '.item-toggle',
+				dataAttribute: 'data-title',
 				storageVar: 'checkedInputs',
+				titleData:	'titleData',
 				featureAction: [
-					{container: '#vnp-add', callback: "insertToPost('{SEARCH.container}', checkedInputs)" }
+					{container: '#vnp-add', callback: "insertToPost('{SEARCH.container}', checkedInputs, titleData)" }
 				],
 				callBackFunction: 'setCookieSelected(checkedInputs, "{SEARCH.table}")',
 				enableCookie: true

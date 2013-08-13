@@ -14,14 +14,18 @@ define( 'CLASS_FUNCTION', true );
 $msg = array();
 $form_action = '';
 
+$classid = $nv_Request->get_int( 'classid', 'post,get', 0 );
+$termid = $nv_Request->get_int( 'termid', 'post,get', 0 );
+
 $class = array(
-				'class_id' => 0,
+				'term_id' => $termid,
+				'class_id' => $classid,
 				'subject_id' => 0,
 				'faculty_id' => 0,
 				'teacher_id' => 0,
 				'class_name' => '',
 				'class_code' => '',
-				'class_week' => 0,
+				'class_week' => '',
 				'class_time' => '',
 				'class_room' => '',
 				'class_type_id' => 1,
@@ -37,13 +41,11 @@ $xtpl = new XTemplate( "add_class.tpl", NV_ROOTDIR . "/themes/" . $global_config
 $xtpl->assign( 'LANG', $lang_module );
 $xtpl->assign( 'GLANG', $lang_global );
 
-$classid = $nv_Request->get_int( 'classid', 'post,get', 0 );
-$termid = $nv_Request->get_int( 'termid', 'post,get', 0 );
 $action = $nv_Request->get_string( 'action', 'get', '' );
 
 if( $nv_Request->get_int( 'save', 'post' ) == '1' )
 {
-	$class = $nv_Request->get_typed_array( 'class', 'post', 'string', array() );
+	//$class = $nv_Request->get_typed_array( 'class', 'post', 'string', array() );
 	require( 'class_functions.php' );
 }
 else
@@ -105,10 +107,52 @@ else
 				die();
 			}
 		
-			$class = $db->sql_fetchrow( $result );	
+			$class = $db->sql_fetchrow( $result );
+			
+			if( !empty( $class['subject_id'] ) )
+			{
+				$_subject_title = array();
+				$class_subject_id = explode(',', $class['subject_id']);
+				foreach( $class_subject_id as $_sbid )
+				{
+					if( !empty($_sbid) )
+					$_subject_title[] = '<li>' . $_sbid . ' - ' . $globalTax['subject'][$_sbid]['subject_name'] . '</li>';
+				}
+				$class['subject_title'] = implode(PHP_EOL, $_subject_title);
+			}
+			
+			if( !empty( $class['teacher_id'] ) )
+			{
+				$_teacher_title = array();
+				$class_teacher_id = explode(',', $class['teacher_id']);
+				foreach( $class_teacher_id as $_tcid )
+				{
+					if( !empty($_tcid) )
+					$_teacher_title[] = '<li>' . $_tcid . ' - ' . $globalTax['teacher'][$_sbid]['teacher_name'] . '</li>';
+				}
+				$class['teacher_title'] = implode(PHP_EOL, $_teacher_title);
+			}
+			
 			$term_data = $globalTax['term'][$class['term_id']];		
 			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;classid=" . $classid;	
-		}		
+		}
+
+		$class_time = explode(',', $class['class_time']);
+		$week = '';
+		foreach( $globalConfig['week_data'] as $key => $day )
+		{
+			$week .= '<div class="class-time"><div class="day">' . $day . '</div>';
+			for( $i = 1; $i <= $globalConfig['day_period']; $i++ )
+			{
+				$_compareKey = $key . '_' . $i;
+				$cked = in_array($_compareKey, $class_time) ? 'checked="checked"' : '';
+				$week .= '<label><input type="checkbox" ' . $cked . ' name="class[class_time][' . $key . '][]" value="' . $i . '" />' . $lang_module['class_period'] . $i . '</label>';
+			}
+			$week .= '</div>';
+		}
+		$class['class_time'] = $week;
+		
+				
 	}
 	elseif( $action == 'select_year' )
 	{
@@ -138,26 +182,22 @@ if( $action == 'add' )
 			$weeks_data[] = array( 'label' => $lang_module['week'] . ' ' . $i, 'value' => $i );
 		}
 	}
-	$xtpl->assign( 'CLASS_SLB', getTaxSelectBox( $globalTax['year'], 'class[year]', $class['year'], NULL, 'year', 'year' ) );
-	$xtpl->assign( 'CLASS', $class );
-	$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'class[faculty_id]', $class['faculty_id'] ) );
-	$xtpl->assign( 'TEACHER_SLB', getTaxSelectBox( 'teacher', 'class[teacher_id]', $class['teacher_id'] ) );
-	$xtpl->assign( 'CLASS_TYPE_SLB', getTaxSelectBox( $globalTax['class_type'], 'class[class_type]', $class['class_type_id'], NULL, 'class_type_id', 'class_type_name' ) );
-	$xtpl->assign( 'TEST_TYPE_SLB', getTaxSelectBox( $globalTax['test_type'], 'class[test_type]', $class['test_type_id'], NULL, 'test_type_id', 'test_type_name' ) );
-	$xtpl->assign( 'WEEK_CB', getTaxCheckBox( $weeks_data, 'class[class_week]', $class['class_week'], NULL, 'value', 'label' ) );
-	
-	$week = '';
-	foreach( $globalConfig['week_data'] as $key => $day )
+	if( $nv_Request->get_int( 'save', 'post' ) != '1' )
 	{
-		$week .= '<div class="class-time"><div class="day">' . $day . '</div>';
-		for( $i = 1; $i <= $globalConfig['day_period']; $i++ )
+		if( !isset( $class['year'] ) && isset($class['term_id']) && $class['term_id'] > 0 )
 		{
-			$week .= '<label><input type="checkbox" name="class[class_time][' . $key . '][]" value="' . $i . '" />' . $lang_module['class_period'] . $i . '</label>';
+			$class['year'] = $globalTax['term'][$class['term_id']];
 		}
-		$week .= '</div>';
+		$xtpl->assign( 'CLASS_SLB', getTaxSelectBox( $globalTax['year'], 'class[year]', $class['year'], NULL, 'year', 'year' ) );
+		$xtpl->assign( 'CLASS', $class );
+		$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'class[faculty_id]', $class['faculty_id'] ) );
+		$xtpl->assign( 'TEACHER_SLB', getTaxSelectBox( 'teacher', 'class[teacher_id]', $class['teacher_id'] ) );
+		$xtpl->assign( 'TERM_SLB', getTaxSelectBox( $globalTax['term'], 'class[term_id]', $class['term_id'], NULL, 'term_id', 'term_name' ) );
+		$xtpl->assign( 'CLASS_TYPE_SLB', getTaxSelectBox( $globalTax['class_type'], 'class[class_type]', $class['class_type_id'], NULL, 'class_type_id', 'class_type_name' ) );
+		$xtpl->assign( 'TEST_TYPE_SLB', getTaxSelectBox( $globalTax['test_type'], 'class[test_type]', $class['test_type_id'], NULL, 'test_type_id', 'test_type_name' ) );
+		$xtpl->assign( 'WEEK_CB', getTaxCheckBox( $weeks_data, 'class[class_week]', $class['class_week'], NULL, 'value', 'label' ) );
+		$xtpl->parse( 'main.add' );
 	}
-	$xtpl->assign( 'WEEK_DATA', $week );
-	$xtpl->parse( 'main.add' );
 }
 elseif( $action == 'select_year' )
 {
