@@ -33,6 +33,7 @@ $globalTax = $globalConfig = array();
 // Taxonomy data
 $globalTax['faculty'] = getFaculty();
 $globalTax['teacher'] = getTeacher();
+$globalTax['subject'] = getSubject();
 $globalTax['test_type'] = getTestType();
 $globalTax['class_type'] = getClassType();
 $globalTax['year'] = getYear();
@@ -99,6 +100,28 @@ function getTeacher($teacher_id = NULL)
 		$_teacher[$row['teacher_id']] = $row;
 	}
 	return $_teacher;
+}
+
+function getSubject($subject_id = NULL)
+{
+	global $db, $module_data;
+	
+	$_subject = array();
+	if( $subject_id > 0 )
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_subject` WHERE `subject_id`=" . intval($subject_id);
+	}
+	else
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_subject`";
+	}
+	$result = nv_db_cache( $sql );
+
+	foreach( $result as $row )
+	{
+		$_subject[$row['subject_id']] = $row;
+	}
+	return $_subject;
 }
 
 function getTerm($term_id = NULL)

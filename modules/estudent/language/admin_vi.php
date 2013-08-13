@@ -92,6 +92,7 @@ $lang_module['class_code'] = 'Mã lớp học';
 $lang_module['add_class'] = 'Thêm lớp học';
 $lang_module['class_name'] = 'Tên lớp';
 $lang_module['class_period'] = 'Tiết ';
+$lang_module['number_student'] = 'Số sinh viên ';
 
 
 ?>
