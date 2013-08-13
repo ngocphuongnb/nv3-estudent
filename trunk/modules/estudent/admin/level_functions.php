@@ -7,27 +7,27 @@
  * @Createdate 2-9-2010 14:43
  */
 
-if( ! defined( 'NV_IS_FILE_ADMIN' ) || !defined( 'TERM_FUNCTION' ) ) die( 'Stop!!!' );
+if( ! defined( 'NV_IS_FILE_ADMIN' ) || !defined( 'LEVEL_FUNCTION' ) ) die( 'Stop!!!' );
 
-$term = $nv_Request->get_typed_array( 'term', 'post', 'string', array() );
+$level = $nv_Request->get_typed_array( 'level', 'post', 'string', array() );
 
-if( $termid )
+if( $levelid )
 {
-	$sql = "UPDATE`" . NV_PREFIXLANG . "_" . $module_data . "_term` SET
-            `term_name` =" . $db->dbescape( $term['term_name'] ) . ",
-			`term_alias` =  " . $db->dbescape( $term['term_alias'] ) . ",
-            `term_desc`= " .  $db->dbescape( $term['term_desc'] ) . ",
+	$sql = "UPDATE`" . NV_PREFIXLANG . "_" . $module_data . "_level` SET
+            `level_name` =" . $db->dbescape( $level['level_name'] ) . ",
+			`level_alias` =  " . $db->dbescape( $level['level_alias'] ) . ",
+            `level_desc`= " .  $db->dbescape( $level['level_desc'] ) . ",
 			`edit_time`=" . NV_CURRENTTIME . " 
-	WHERE `term_id` =" . $termid;
+	WHERE `level_id` =" . $levelid;
 	$db->sql_query( $sql );
 }
 else
 {
-	$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_term` VALUES (
+	$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_level` VALUES (
             NULL,
-			" . $db->dbescape( $term['term_name'] ) . ",
-			" . $db->dbescape( $term['term_alias'] ) . ",
-			" . $db->dbescape( $term['term_desc'] ) . ",
+			" . $db->dbescape( $level['level_name'] ) . ",
+			" . $db->dbescape( $level['level_alias'] ) . ",
+			" . $db->dbescape( $level['level_desc'] ) . ",
 			0,
 			" . $admin_info['admin_id'] . ",
 			" . NV_CURRENTTIME . ",
@@ -39,15 +39,15 @@ nv_del_moduleCache( $module_name );
 
 if( $db->sql_affectedrows() > 0 )
 {
-	if( $termid )
+	if( $levelid )
 	{
 		$msg = array( 'content' => $lang_module['action_ok'], 'type' => 'success' );
-		nv_insert_logs( NV_LANG_DATA, $module_name, 'Edit term', "Level ID:  " . $termid, $admin_info['userid'] );
+		nv_insert_logs( NV_LANG_DATA, $module_name, 'Edit level', "Level ID:  " . $levelid, $admin_info['userid'] );
 	}
 	else
 	{
 		$msg = array( 'content' => $lang_module['action_ok'], 'type' => 'success' );
-		nv_insert_logs( NV_LANG_DATA, $module_name, 'Add term', "Level ID:  " . $_id, $admin_info['userid'] );
+		nv_insert_logs( NV_LANG_DATA, $module_name, 'Add level', "Level ID:  " . $_id, $admin_info['userid'] );
 	}
 }
 else

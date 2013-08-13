@@ -128,7 +128,7 @@ else
 				foreach( $class_teacher_id as $_tcid )
 				{
 					if( !empty($_tcid) )
-					$_teacher_title[] = '<li>' . $_tcid . ' - ' . $globalTax['teacher'][$_sbid]['teacher_name'] . '</li>';
+					$_teacher_title[] = '<li>' . $_tcid . ' - ' . $globalTax['teacher'][$_tcid]['teacher_name'] . '</li>';
 				}
 				$class['teacher_title'] = implode(PHP_EOL, $_teacher_title);
 			}

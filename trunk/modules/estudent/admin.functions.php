@@ -14,17 +14,20 @@ $submenu['level'] = $lang_module['level_management'];
 $submenu['subject'] = $lang_module['subject_management'];
 $submenu['faculty'] = $lang_module['faculty_management'];
 $submenu['term'] = $lang_module['term_management'];
+$submenu['base_class'] = $lang_module['base_class_management'];
 $submenu['class'] = $lang_module['class_management'];
+$submenu['sp_data'] = 'Cài dữ liệu mẫu';
 
 //$my_head .= '<link rel="Stylesheet" href="' . NV_BASE_SITEURL . 'modules/' . $module_file . '/data/bootstrap/css/bootstrap.css" type="text/css" />';
 
-$allow_func = array( 'main', 'ajax_get_item',
+$allow_func = array( 'main', 'ajax_get_item', 'sp_data',
 							'teacher', 'teacher_ajax_action', 
 							'level', 'level_ajax_action',
 							'subject', 'subject_ajax_action',
 							'faculty', 'faculty_ajax_action',
 							'term', 'term_ajax_action',
-							'class', 'class_ajax_action' );
+							'class', 'class_ajax_action',
+							'base_class', 'base_class_ajax_action' );
 
 define( 'NV_IS_FILE_ADMIN', true );
 
@@ -36,8 +39,10 @@ $globalTax['teacher'] = getTeacher();
 $globalTax['subject'] = getSubject();
 $globalTax['test_type'] = getTestType();
 $globalTax['class_type'] = getClassType();
+$globalTax['level'] = getLevel();
 $globalTax['year'] = getYear();
 $globalTax['term'] = getTerm();
+$globalTax['course'] = getCourse();
 
 // Global config data
 $globalConfig['day_period'] = 12;
@@ -146,6 +151,28 @@ function getTerm($term_id = NULL)
 	return $_term;
 }
 
+function getLevel($level_id = NULL)
+{
+	global $db, $module_data;
+	
+	$_level = array();
+	if( $level_id > 0 )
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_level` WHERE `level_id`=" . intval($level_id);
+	}
+	else
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_level`";
+	}
+	$result = nv_db_cache( $sql );
+
+	foreach( $result as $row )
+	{
+		$_level[$row['level_id']] = $row;
+	}
+	return $_level;
+}
+
 function getTestType($test_type_id = NULL)
 {
 	$test_type = array(
@@ -213,13 +240,29 @@ function getYear($year_id = NULL)
 	$year = array();
 	for( $i = 2010; $i <= 2020; $i++ )
 	{
-		$year[] = array( 'year' => $i );
+		$year[$i] = array( 'year' => $i );
 	}
 	if( $year_id != NULL && isset( $year[$year_id] ) )
 	{
 		return $year[$year_id];
 	}
 	else return $year;
+}
+
+function getCourse($course_id = NULL)
+{
+	$course = array();
+	$j = 1;
+	for( $i = 2010; $i <= 2020; $i++ )
+	{
+		$course['K' . $j] = array( 'course_id' => 'K' . $j, 'course_name' => 'K' . $j . ' - ' . $i );
+		$j++;
+	}
+	if( $course_id != NULL && isset( $course[$course_id] ) )
+	{
+		return $course[$course_id];
+	}
+	else return $course;
 }
 
 function getTaxSelectBox( $termData, $name = NULL, $defaultValue = NULL, $selectBoxID = NULL, $valueKey = NULL, $titleKey = NULL, $otherAttr = NULL )

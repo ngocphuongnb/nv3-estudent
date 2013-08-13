@@ -53,6 +53,16 @@ $lang_module['add_teacher'] = 'Thêm giảng viên';
 $lang_module['teacher'] = 'Giảng viên';
 $lang_module['choose_teacher'] = 'Chọn giảng viên';
 
+$lang_module['base_class_management'] = 'Quản lý lớp chính quy';
+$lang_module['base_class_name'] = 'Tên lớp chính quy';
+$lang_module['base_class_desc'] = 'Giới thiệu lớp chính quy';
+$lang_module['add_base_class'] = 'Thêm lớp chính quy';
+$lang_module['base_class'] = 'Lớp chính quy';
+$lang_module['choose_base_class'] = 'Chọn lớp chính quy';
+$lang_module['course'] = 'Khóa';
+
+
+$lang_module['level'] = 'Hệ đào tạo';
 $lang_module['level_management'] = 'Quản lý hệ đào tạo';
 $lang_module['level_name'] = 'Tên hệ đào tạo';
 $lang_module['level_desc'] = 'Giới thiệu hệ đào tạo';
