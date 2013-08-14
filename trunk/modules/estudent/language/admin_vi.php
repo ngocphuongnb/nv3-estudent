@@ -34,6 +34,9 @@ $lang_module['class_type'] = 'Loại lớp';
 $lang_module['test_type'] = 'Hình thức thi';
 $lang_module['class_room'] = 'Phòng học';
 $lang_module['class_time'] = 'Giờ học';
+$lang_module['select_member'] = 'Chọn thành viên';
+$lang_module['select_faculty'] = 'Chọn khoa viện';
+$lang_module['add_student_form'] = 'Chọn khoa viện và năm học để thêm sinh viên';
 
 $lang_module['add_selected'] = 'Thêm mục đã chọn';
 
@@ -52,6 +55,13 @@ $lang_module['teacher_desc'] = 'Giới thiệu giảng viên';
 $lang_module['add_teacher'] = 'Thêm giảng viên';
 $lang_module['teacher'] = 'Giảng viên';
 $lang_module['choose_teacher'] = 'Chọn giảng viên';
+
+$lang_module['student_management'] = 'Quản lý sinh viên';
+$lang_module['student_name'] = 'Tên sinh viên';
+$lang_module['student_desc'] = 'Giới thiệu sinh viên';
+$lang_module['add_student'] = 'Thêm sinh viên';
+$lang_module['student'] = 'Sinh viên';
+$lang_module['choose_student'] = 'Chọn sinh viên';
 
 $lang_module['base_class_management'] = 'Quản lý lớp chính quy';
 $lang_module['base_class_name'] = 'Tên lớp chính quy';

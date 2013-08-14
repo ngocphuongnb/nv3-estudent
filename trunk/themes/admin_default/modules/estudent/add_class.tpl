@@ -3,6 +3,7 @@
 <strong>{LANG.select_year}</strong>
 {YEAR_SLB}
 
+
 <!-- BEGIN: term -->
 <div class="vnp-title">{LANG.select_term}</div>
 <ul class="vnp-termlist">

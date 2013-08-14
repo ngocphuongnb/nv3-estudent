@@ -16,6 +16,7 @@ $submenu['faculty'] = $lang_module['faculty_management'];
 $submenu['term'] = $lang_module['term_management'];
 $submenu['base_class'] = $lang_module['base_class_management'];
 $submenu['class'] = $lang_module['class_management'];
+$submenu['student'] = $lang_module['student_management'];
 $submenu['sp_data'] = 'Cài dữ liệu mẫu';
 
 //$my_head .= '<link rel="Stylesheet" href="' . NV_BASE_SITEURL . 'modules/' . $module_file . '/data/bootstrap/css/bootstrap.css" type="text/css" />';
@@ -27,7 +28,8 @@ $allow_func = array( 'main', 'ajax_get_item', 'sp_data',
 							'faculty', 'faculty_ajax_action',
 							'term', 'term_ajax_action',
 							'class', 'class_ajax_action',
-							'base_class', 'base_class_ajax_action' );
+							'base_class', 'base_class_ajax_action',
+							'student', 'student_ajax_action' );
 
 define( 'NV_IS_FILE_ADMIN', true );
 
@@ -238,6 +240,8 @@ function getClassType($class_type_id = NULL)
 function getYear($year_id = NULL)
 {
 	$year = array();
+	$year[date('Y')] = array( 'year' => date('Y') );
+	
 	for( $i = 2010; $i <= 2020; $i++ )
 	{
 		$year[$i] = array( 'year' => $i );
