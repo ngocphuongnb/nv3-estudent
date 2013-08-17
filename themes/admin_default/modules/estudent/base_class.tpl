@@ -23,7 +23,7 @@
 
 <table class="tab1">
     <thead>
-        <td><strong>{LANG.base_class_name}</strong></td>
+        </thead><td><strong>{LANG.base_class_name}</strong></td>
         <td style="width:100px;font-weight: bold">{LANG.faculty}</td>
         <td style="width:100px;font-weight: bold">{LANG.course}</td>
         <td style="width:100px;font-weight: bold">{LANG.number_student}</td>
@@ -57,5 +57,11 @@
     </tfoot>
 </table>
 
-<center>{PAGE_GEN}</center>
+<center>
+    <div class="pagination" style="margin-top: -15px">
+        <ul class="vnp-pagination">
+        {PAGE_GEN}
+        </ul>
+    </div>
+</center>
 <!-- END: main -->

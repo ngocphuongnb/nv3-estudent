@@ -78,14 +78,12 @@
                 </tr>
             </tfoot>
         </table>    
-        <center>      
+        <center>
             <div class="pagination" style="margin-top: -15px">
-                <!-- BEGIN: page -->
                 <ul class="vnp-pagination">
                 {PAGE_GEN}
                 </ul>
-                <!-- END: page -->
-            </div>       
+            </div>
         </center>
         <script type="text/javascript">
 		$(document).ready(function() {

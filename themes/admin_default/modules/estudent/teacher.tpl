@@ -21,7 +21,7 @@
 
 <table class="tab1">
     <thead>
-        <td>{LANG.teacher_name}</td>
+        </thead><td>{LANG.teacher_name}</td>
         <td style="width:100px">{LANG.faculty}</td>
         <td style="width:150px">{LANG.status}</td>
         <td style="width:100px">{LANG.feature}</td>
@@ -51,5 +51,11 @@
     </tfoot>
 </table>
 
-<center>{PAGE_GEN}</center>
+<center>
+    <div class="pagination" style="margin-top: -15px">
+        <ul class="vnp-pagination">
+        {PAGE_GEN}
+        </ul>
+    </div>
+</center>
 <!-- END: main -->
