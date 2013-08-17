@@ -117,3 +117,20 @@ function insertToPost(container, checkedInputs, titleData)
 	$('#' + container + '_title', opener.document).html(html_title);
 	window.close();
 }
+
+$(document).ready(function() {
+	var pageData = '';
+	$('ul.vnp-pagination').each(function() {
+		$(this).find('*').each(function(){
+			if( $(this).prop("tagName") == 'STRONG' )
+			{
+				pageData += '<li class="active"><a><strong>' + $(this).html() + '</strong></a></li>';
+			}
+			else if( $(this).prop("tagName") == 'A' )
+			{
+				pageData += '<li><a href="' + $(this).attr('href') + '">' + $(this).html() + '</a></li>';
+			}
+		});
+		$(this).html(pageData);
+    });    
+});

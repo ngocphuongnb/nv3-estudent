@@ -106,10 +106,11 @@ else
 				$_s[] = "`student_name` LIKE '%" . $db->dblikeescape( $search['q'] ) . "%'";
 			}
 			//if( $search['faculty_id'] > 0 || !empty($search['q']) || !empty($search['course_id']) )
-			if( !empty($search) )
+			if( !empty($_s) )
 			{
 				$_s = "WHERE " . implode(' AND ', $_s );
 			}
+			else $_s = '';
 		}
 		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
 		

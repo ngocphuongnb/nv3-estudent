@@ -81,8 +81,7 @@ ul.vnp-termlist li {
 	cursor: pointer;
 	color: #cb0000
 }
-<<<<<<< .mine
-.vnp-pagination a {
+.mine .vnp-pagination a {
 	font-weight: bold
 }
 .pagination {
@@ -116,6 +115,7 @@ ul.vnp-termlist li {
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-left-width: 0;
+  font-weight: bold !important
 }
 
 .pagination ul > li > a:hover,
