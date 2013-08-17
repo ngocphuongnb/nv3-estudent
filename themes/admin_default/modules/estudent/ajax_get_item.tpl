@@ -43,6 +43,14 @@
                         <td>{LANG.faculty}</td>
                         <td>{SEARCH_FACULTY}</td>
                         <!-- END: faculty -->
+                        <!-- BEGIN: course -->
+                        <td>{LANG.course}</td>
+                        <td>{SEARCH_COURSE}</td>
+                        <!-- END: course -->
+                        <!-- BEGIN: level -->
+                        <td>{LANG.level}</td>
+                        <td>{SEARCH_LEVEL}</td>
+                        <!-- END: level -->
                         <td>{LANG.number}</td>
                         <td>{SHOW_NUMBER}</td>
                         <td><input type="submit" value="{LANG.search}" class="btn btn-primary" /></td>

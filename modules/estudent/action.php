@@ -17,6 +17,7 @@ foreach( $student_table_log as $_student_table )
 {
 	$sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_student_" . $_student_table . "`;";
 }
+file_put_contents( NV_ROOTDIR . '/modules/' . $module_file . '/data/student_table_data.txt', '' );
 
 $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_teacher`;";
 $sql_drop_module[] = "DROP TABLE IF EXISTS `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_level`;";
@@ -180,8 +181,11 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `userid` mediumint(8) NOT NULL DEFAULT '0',
   `faculty_id` mediumint(8) NOT NULL DEFAULT '0',
   `level_id` mediumint(8) NOT NULL DEFAULT '0',
-  `base_class_id` mediumint(8) NOT NULL DEFAULT '0',
-  `student_alias` varchar(255) NOT NULL,
+  `base_class_id` varchar(255) NOT NULL,
+  `student_name` varchar(255) NOT NULL,
+  `student_code` varchar(255) NOT NULL,
+  `course_id` varchar(255) NOT NULL,
+  `year` int(11) NOT NULL DEFAULT '0',
   
   `family_name` varchar(255),
   `last_name` varchar(255),
@@ -207,7 +211,7 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`student_id`),
   UNIQUE KEY `userid` (`userid`),
-  UNIQUE KEY `student_alias` (`student_alias`)
+  UNIQUE KEY `student_code` (`student_code`)
 ) ENGINE=MyISAM";
 
 ?>

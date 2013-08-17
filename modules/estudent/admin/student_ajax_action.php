@@ -15,7 +15,19 @@ $action = $nv_Request->get_string( 'action', 'post', '' );
 if( !empty($listid) )
 {
 	if( $action == 'delete' )
-	{		
+	{
+		$sql = "SELECT `student_id`, `faculty_id`, `year`  FROM `" . NV_PREFIXLANG . "_" . $module_data . "_student` WHERE `student_id` IN (" . $listid . ")";
+		$result = $db->sql_query( $sql );
+		if( $db->sql_numrows( $result ) > 0 )
+		{
+			while( $row = $db->sql_fetchrow( $result ) )
+			{
+				$_std_table = $row['faculty_id'] . '_' . $row['year'];
+				$sql = "DELETE FROM `" . NV_PREFIXLANG . "_" . $module_data . "_student_" . $_std_table . "` WHERE `student_id`=" . intval($row['student_id'] );
+				$db->sql_query( $sql );
+			}
+		}
+				
 		$sql = "DELETE FROM `" . NV_PREFIXLANG . "_" . $module_data . "_student` WHERE `student_id` IN (" . $listid . ")";
 		if($db->sql_query( $sql ))
 		{

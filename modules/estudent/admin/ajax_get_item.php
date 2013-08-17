@@ -66,6 +66,20 @@ switch( $search['mode'] )
 		$search['extra_condition']['faculty_id'] = array( 'key' => 'faculty_id', 'value' => $_faculty_id, 'datatype' => 'int' );
 		break;
 	}
+	case 'base_class' :
+	{
+		$keyData['id_key'] = 'base_class_id';
+		$keyData['name_key'] = 'base_class_name';
+		$search['query_key'] = 'base_class_name';
+		$search['table'] = 'base_class';
+		$_faculty_id = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+		$_course_id = $nv_Request->get_string( 'course_id', 'get', '' );
+		$_level_id = $nv_Request->get_string( 'level_id', 'get', '' );
+		$search['extra_condition']['faculty_id'] = array( 'key' => 'faculty_id', 'value' => $_faculty_id, 'datatype' => 'int' );
+		$search['extra_condition']['course_id'] = array( 'key' => 'course_id', 'value' => $_course_id, 'datatype' => 'string' );
+		$search['extra_condition']['level_id'] = array( 'key' => 'level_id', 'value' => $_level_id, 'datatype' => 'int' );
+		break;
+	}
 }
 
 $_s = $_string_query = $_q = '';
@@ -84,11 +98,11 @@ if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
 		{
 			if( !empty( $_condition['value'] ) )
 			{
-				if( $_condition['datatype'] == 'int' )
+				if( $_condition['datatype'] == 'int' && $_condition['value'] > 0 )
 				{
 					$_s[] = '`' . $_condition['key'] . '`=' . intval($_condition['value']);
 				}
-				else
+				elseif( !empty($_condition['value']) )
 				{
 					$_s[] = '`' . $_condition['key'] . '`=' . $db->dbescape($_condition['value']);
 				}
@@ -163,10 +177,18 @@ $xtpl->assign( 'MODULE_FILE', $module_file );
 $xtpl->assign( 'OP', $op );
 $xtpl->assign( 'VNP_COOKIE_PREFIX', $global_config['cookie_prefix'] );
 
-if( in_array( $search['mode'], array( 'teacher', 'subject' ) ) )
+if( in_array( $search['mode'], array( 'teacher', 'subject', 'base_class' ) ) )
 {
 	$xtpl->assign( 'SEARCH_FACULTY', getTaxSelectBox( 'faculty', 'faculty_id', $search['extra_condition']['faculty_id']['value'] ) );
 	$xtpl->parse( 'main.faculty' );
+}
+if( in_array( $search['mode'], array( 'base_class' ) ) )
+{
+	$xtpl->assign( 'SEARCH_COURSE', getTaxSelectBox( $globalTax['course'], 'course_id', $search['extra_condition']['course_id']['value'], NULL, 'course_id', 'course_name' ) );
+	$xtpl->parse( 'main.course' );
+	
+	$xtpl->assign( 'SEARCH_LEVEL', getTaxSelectBox( $globalTax['level'], 'level_id', $search['extra_condition']['level_id']['value'], NULL, 'level_id', 'level_name' ) );
+	$xtpl->parse( 'main.level' );
 }
 $xtpl->assign( 'SHOW_NUMBER', getTaxSelectBox( $showNumber, 'per_page', $search['per_page'], NULL, 'value', 'value' ) );
 $xtpl->assign( 'SEARCH', $search );

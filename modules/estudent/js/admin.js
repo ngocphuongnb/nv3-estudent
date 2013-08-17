@@ -84,7 +84,7 @@ function res_get_alias(res) {
 
 function getIDs( mode, container, IDs )
 {
-	if( mode == 'teacher' || mode == 'subject' || mode == 'class' )
+	if( mode == 'teacher' || mode == 'subject' || mode == 'class' || mode == 'base_class' )
 	{
 		var _currentIDs = document.getElementById(container).value;
 		if( !_currentIDs  && _currentIDs != 0 )
@@ -93,7 +93,7 @@ function getIDs( mode, container, IDs )
 		}
 		else IDs = _currentIDs;
 		var _url = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=ajax_get_item&mode=' + mode + '&container=' + container + '&listid=' + IDs;
-		nv_open_browse_file( _url, 'NVImg', '850', '600', 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' )
+		nv_open_browse_file( _url, 'NVImg', '950', '600', 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' )
 	}
 }
 
