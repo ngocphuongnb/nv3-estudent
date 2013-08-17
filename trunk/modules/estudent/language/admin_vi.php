@@ -38,6 +38,12 @@ $lang_module['select_member'] = 'Chọn thành viên';
 $lang_module['select_faculty'] = 'Chọn khoa viện';
 $lang_module['add_student_form'] = 'Chọn khoa viện và năm học để thêm sinh viên';
 
+$lang_module['birthday'] = 'Ngày sinh';
+$lang_module['hometown'] = 'Quê quán';
+$lang_module['address'] = 'Địa chỉ';
+$lang_module['email'] = 'Email';
+$lang_module['phone'] = 'Điện thoại';
+
 $lang_module['add_selected'] = 'Thêm mục đã chọn';
 
 $lang_module['monday'] = 'Thứ 2';
@@ -62,6 +68,21 @@ $lang_module['student_desc'] = 'Giới thiệu sinh viên';
 $lang_module['add_student'] = 'Thêm sinh viên';
 $lang_module['student'] = 'Sinh viên';
 $lang_module['choose_student'] = 'Chọn sinh viên';
+$lang_module['student_code'] = 'Mã sinh viên';
+$lang_module['cannot_add_student_faculty_table'] = 'Không thể thêm sinh viên vào bảng dữ liệu khoa viện ';
+$lang_module['add_student_success'] = 'Thêm sinh viên thành công!';
+$lang_module['success_update_student'] = 'Sửa sinh viên thành công';
+$lang_module['error_update_student'] = 'Lỗi, không thể sửa thông tin sinh viên';
+
+$lang_module['study_suspended'] = 'Đình chỉ học';
+$lang_module['study_normal'] = 'Bình thường';
+$lang_module['study_warned_1'] = 'Cảnh cáo mức 1';
+$lang_module['study_warned_2'] = 'Cảnh cáo mức 2';
+$lang_module['study_warned_3'] = 'Cảnh cáo mức 3';
+$lang_module['study_reserved_1'] = 'Bảo lưu lần 1';
+$lang_module['study_reserved_2'] = 'Bảo lưu lần 2';
+$lang_module['study_reserved_3'] = 'Bảo lưu lần 3';
+$lang_module['study_graduated'] = 'Tốt nghiệp';
 
 $lang_module['base_class_management'] = 'Quản lý lớp chính quy';
 $lang_module['base_class_name'] = 'Tên lớp chính quy';
@@ -70,6 +91,7 @@ $lang_module['add_base_class'] = 'Thêm lớp chính quy';
 $lang_module['base_class'] = 'Lớp chính quy';
 $lang_module['choose_base_class'] = 'Chọn lớp chính quy';
 $lang_module['course'] = 'Khóa';
+$lang_module['select_course'] = 'Chọn khóa';
 
 
 $lang_module['level'] = 'Hệ đào tạo';
@@ -77,6 +99,7 @@ $lang_module['level_management'] = 'Quản lý hệ đào tạo';
 $lang_module['level_name'] = 'Tên hệ đào tạo';
 $lang_module['level_desc'] = 'Giới thiệu hệ đào tạo';
 $lang_module['add_level'] = 'Thêm hệ đào tạo';
+$lang_module['select_level'] = 'Chọn hệ đào tạo';
 
 $lang_module['term_management'] = 'Quản lý học kỳ';
 $lang_module['term_name'] = 'Tên học kỳ';
@@ -113,6 +136,14 @@ $lang_module['add_class'] = 'Thêm lớp học';
 $lang_module['class_name'] = 'Tên lớp';
 $lang_module['class_period'] = 'Tiết ';
 $lang_module['number_student'] = 'Số sinh viên ';
+
+$lang_module['class_canceled'] = 'Hủy lớp';
+$lang_module['class_normal'] = 'Lớp bình thường';
+$lang_module['class_edit_reg'] = 'Điều chỉnh đăng ký';
+$lang_module['class_reg_closed'] = 'Đóng đăng ký lớp';
+$lang_module['class_based_class'] = 'Chỉ dành cho lớp chính quy';
+
+$lang_module['add_student_header'] = '<span class="row">Bạn đang thêm sinh viên cho khoa <strong>%s</strong> , năm học <strong>%s</strong></span>';
 
 
 ?>

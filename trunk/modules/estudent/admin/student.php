@@ -53,7 +53,7 @@ $search = array(
 					'page' => 0
 					);
 					
-if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
+if( $nv_Request->get_string( 'search', 'get', 0 ) == 1 )
 {
 	$search['is_search'] = true;
 	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
@@ -113,7 +113,7 @@ else
 			{
 				$array_status = array( $lang_module['deactive'], $lang_module['active'] );
 				$row['class'] = ( ++$i % 2 ) ? " class=\"second\"" : "";
-				$row['url_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;studentid=" . $row['student_id'];
+				$row['url_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;faculty_id=" . $row['faculty_id'] . "&amp;year=" . $row['year'] ."&amp;studentid=" . $row['student_id'];
 				foreach( $array_status as $key => $val )
 				{
 					$xtpl->assign( 'STATUS', array(
@@ -140,10 +140,12 @@ else
 				'student_name' => '',
 				'student_alias' => '', 
 				'student_desc' => '',
-				'faculty_id' => 0, 
-				'level_id' => 0
+				'faculty_id' => $add_config['faculty_id'], 
+				'level_id' => 0,
+				'year' => $add_config['year'],
+				'course_id' => 0
 			);
-			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add";
+			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;year=" . $add_config['year'] . "&amp;faculty_id=" . $add_config['faculty_id'];
 		}
 		else
 		{
@@ -156,14 +158,33 @@ else
 				die();
 			}
 		
-			$student = $db->sql_fetchrow( $result );			
-			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;studentid=" . $studentid;			
+			$student = $db->sql_fetchrow( $result );
+					
+			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;year=" . $add_config['year'] . "&amp;faculty_id=" . $add_config['faculty_id'] . "&amp;studentid=" . $student['student_id'];
 		}		
 	}
 }
 
 if( $action == 'add' )
 {
+	if( !empty( $student['base_class_id'] ) )
+	{
+		$_base_class_title = array();
+		$base_class_ids = explode(',', $student['base_class_id']);
+		foreach( $base_class_ids as $_baseClassID )
+		{
+			if( !empty($_baseClassID) )
+			{
+				$_base_class_data = getBaseClass($_baseClassID);
+				if( !empty($_base_class_data) )
+				{
+					$_base_class_title[] = '<li>' . $_baseClassID . ' - ' . $_base_class_data[$_baseClassID]['base_class_name'] . '</li>';
+				}
+			}
+		}
+		$student['base_class'] = implode(PHP_EOL, $_base_class_title);
+	}
+	
 	if( ! empty( $student['student_desc'] ) ) $student['student_desc'] = nv_htmlspecialchars( $student['student_desc'] );
 		
 	if( defined( 'NV_EDITOR' ) ) require_once ( NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php' );
@@ -178,7 +199,19 @@ if( $action == 'add' )
 	}
 	$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'student[faculty_id]', $student['faculty_id'] ) );
 	$xtpl->assign( 'LEVEL_SLB', getTaxSelectBox( 'level', 'student[level_id]', $student['level_id'] ) );
+	$xtpl->assign( 'COURSE_SLB', getTaxSelectBox( $globalTax['course'], 'student[course_id]', $student['course_id'], NULL, 'course_id', 'course_name' ) );
+	$xtpl->assign( 'YEAR_SLB', getTaxSelectBox( $globalTax['year'], 'student[year]', $student['year'], NULL, 'year', 'year' ) );
 	$xtpl->assign( 'STUDENT', $student );
+	
+	$xtpl->assign( 'ADD_STUDENT_HEADER', sprintf( $lang_module['add_student_header'], $globalTax['faculty'][$add_config['faculty_id']]['faculty_name'], $globalTax['year'][$add_config['year']]['year']) );
+	
+	$my_head .= "<link type=\"text/css\" href=\"" . NV_BASE_SITEURL . "js/ui/jquery.ui.core.css\" rel=\"stylesheet\" />\n";
+	$my_head .= "<link type=\"text/css\" href=\"" . NV_BASE_SITEURL . "js/ui/jquery.ui.theme.css\" rel=\"stylesheet\" />\n";
+	$my_head .= "<link type=\"text/css\" href=\"" . NV_BASE_SITEURL . "js/ui/jquery.ui.datepicker.css\" rel=\"stylesheet\" />\n";
+
+	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/ui/jquery.ui.core.min.js\"></script>\n";
+	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/ui/jquery.ui.datepicker.min.js\"></script>\n";
+	$my_head .= "<script type=\"text/javascript\" src=\"" . NV_BASE_SITEURL . "js/language/jquery.ui.datepicker-" . NV_LANG_INTERFACE . ".js\"></script>\n";
 }
 else
 {

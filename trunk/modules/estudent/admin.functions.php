@@ -45,6 +45,25 @@ $globalTax['level'] = getLevel();
 $globalTax['year'] = getYear();
 $globalTax['term'] = getTerm();
 $globalTax['course'] = getCourse();
+$globalTax['study_status'] = array(
+									0 => $lang_module['study_suspended'],
+									1 => $lang_module['study_normal'],
+									2 => $lang_module['study_warned_1'],
+									3 => $lang_module['study_warned_2'],
+									4 => $lang_module['study_warned_3'],
+									5 => $lang_module['study_reserved_1'],
+									6 => $lang_module['study_reserved_2'],
+									7 => $lang_module['study_reserved_3'],
+									8 => $lang_module['study_graduated']
+								);
+								
+$globalTax['class_reg_status'] = array(
+									0 => $lang_module['class_canceled'],
+									1 => $lang_module['class_normal'],
+									2 => $lang_module['class_edit_reg'],
+									3 => $lang_module['class_reg_closed'],
+									4 => $lang_module['class_based_class']
+								);
 
 // Global config data
 $globalConfig['day_period'] = 12;
@@ -155,7 +174,7 @@ function getTerm($term_id = NULL)
 
 function getLevel($level_id = NULL)
 {
-	global $db, $module_data;
+	global $db, $module_data, $lang_module;
 	
 	$_level = array();
 	if( $level_id > 0 )
@@ -167,7 +186,7 @@ function getLevel($level_id = NULL)
 		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_level`";
 	}
 	$result = nv_db_cache( $sql );
-
+	$_level[0] = array( 'level_id' => 0, 'level_name' => $lang_module['select_level'] );
 	foreach( $result as $row )
 	{
 		$_level[$row['level_id']] = $row;
@@ -255,7 +274,10 @@ function getYear($year_id = NULL)
 
 function getCourse($course_id = NULL)
 {
+	global $lang_module;
+	
 	$course = array();
+	$course[0] = array( 'course_id' => 0, 'course_name' => $lang_module['select_course']);
 	$j = 1;
 	for( $i = 2010; $i <= 2020; $i++ )
 	{
@@ -330,6 +352,28 @@ function getTaxCheckBox( $termData, $name = NULL, $defaultValue = '', $selectBox
 		}
 	}
 	return implode( PHP_EOL, $selectBox );
+}
+
+function getBaseClass($base_class_id = NULL)
+{
+	global $db, $module_data;
+	
+	$_base_class = array();
+	if( $base_class_id > 0 )
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` WHERE `base_class_id`=" . intval($base_class_id);
+	}
+	else
+	{
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class`";
+	}
+	$result = nv_db_cache( $sql );
+
+	foreach( $result as $row )
+	{
+		$_base_class[$row['base_class_id']] = $row;
+	}
+	return $_base_class;
 }
 
 function p($data = array())

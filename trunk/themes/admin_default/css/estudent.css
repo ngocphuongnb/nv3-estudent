@@ -169,5 +169,6 @@ ul.vnp-termlist li {
 .selected-title li {
 	line-height: 20px
 }
-=======
->>>>>>> .r10
+span.row strong {
+	color: #000 !important
+}
