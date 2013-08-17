@@ -73,6 +73,8 @@ $lang_module['cannot_add_student_faculty_table'] = 'Không thể thêm sinh viê
 $lang_module['add_student_success'] = 'Thêm sinh viên thành công!';
 $lang_module['success_update_student'] = 'Sửa sinh viên thành công';
 $lang_module['error_update_student'] = 'Lỗi, không thể sửa thông tin sinh viên';
+$lang_module['error_student_table_move_student'] = 'Lỗi không thể chuyển dữ liệu thành viên các bảng ';
+$lang_module['error_create_student_table'] = 'Lỗi không thể tạo bảng thành viên ';
 
 $lang_module['study_suspended'] = 'Đình chỉ học';
 $lang_module['study_normal'] = 'Bình thường';

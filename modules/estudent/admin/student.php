@@ -12,13 +12,16 @@ if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
 define( 'STUDENT_FUNCTION', true );
 
 $action = $nv_Request->get_string( 'action', 'get', '' );
-$add_config['year'] = $nv_Request->get_int( 'year', 'get', 0 );
-$add_config['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+$add_config['year'] = $nv_Request->get_int( 'year', 'get,post', 0 );
+$add_config['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get,post', 0 );
 
 if( $action == 'add' )
 {
 	if( $add_config['faculty_id'] > 0 && $add_config['year'] > 0 )
-	include('create_student_table.php');
+	{
+		if( !createStudentTable($add_config) )
+		die('Cannot create student table ' . $add_config['faculty_id'] . '_' . $add_config['year'] . ' - ' . $globalTax['faculty'][$add_config['faculty_id']]['faculty_name'] . ' - ' . $add_config['year']);
+	}
 	else
 	{
 		$xtpl = new XTemplate( "add_student.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
@@ -49,6 +52,8 @@ $search = array(
 					'is_search' => false,
 					'q' => '',
 					'faculty_id' => 0,
+					'year' => date('Y'),
+					'course_id' => '',
 					'per_page' => 10,
 					'page' => 0
 					);
@@ -58,6 +63,8 @@ if( $nv_Request->get_string( 'search', 'get', 0 ) == 1 )
 	$search['is_search'] = true;
 	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
 	$search['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+	$search['course_id'] = $nv_Request->get_string( 'course_id', 'get', '' );
+	$search['year'] = $nv_Request->get_int( 'year', 'get', 0 );
 	$search['per_page'] = $nv_Request->get_int( 'per_page', 'get', 10 );
 	$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
 }
@@ -90,11 +97,16 @@ else
 			{
 				$_s[] = "`faculty_id`=" . intval($search['faculty_id']);
 			}
+			if( $search['course_id'] )
+			{
+				$_s[] = "`course_id`=" . $db->dbescape($search['course_id']);
+			}
 			if( $search['q'] )
 			{
 				$_s[] = "`student_name` LIKE '%" . $db->dblikeescape( $search['q'] ) . "%'";
 			}
-			if( $search['faculty_id'] > 0 || !empty($search['q']) )
+			//if( $search['faculty_id'] > 0 || !empty($search['q']) || !empty($search['course_id']) )
+			if( !empty($search) )
 			{
 				$_s = "WHERE " . implode(' AND ', $_s );
 			}
@@ -138,7 +150,7 @@ else
 			$student = array(
 				'studentid' => 0,
 				'student_name' => '',
-				'student_alias' => '', 
+				'student_alias' => '',
 				'student_desc' => '',
 				'faculty_id' => $add_config['faculty_id'], 
 				'level_id' => 0,
@@ -217,6 +229,7 @@ else
 {
 	$generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );
 	$xtpl->assign( 'SEARCH_FACULTY', getTaxSelectBox( 'faculty', 'faculty_id', $search['faculty_id'] ) );
+	$xtpl->assign( 'SEARCH_COURSE', getTaxSelectBox( $globalTax['course'], 'course_id', $search['course_id'], NULL, 'course_id', 'course_name' ) );
 	$showNumber = array();
 	$i = 1;
 	while( $i <= 20 )

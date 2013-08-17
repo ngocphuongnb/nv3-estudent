@@ -76,7 +76,7 @@ $globalConfig['week_data'] = array(
 									7 => $lang_module['saturday'],
 									8 => $lang_module['sunday']
 								);
-
+include NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
 
 function vnp_msg($msg)
 {
