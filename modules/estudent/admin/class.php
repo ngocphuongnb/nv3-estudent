@@ -34,7 +34,8 @@ $class = array(
 				'registered_student' => 0,
 				'number_student' => 0,
 				'student_data' => '',
-				'year' => date("Y")
+				'year' => date("Y"),
+				'status' => 1
 			);
 
 $xtpl = new XTemplate( "add_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
@@ -71,17 +72,7 @@ else
 				$row['term'] = $globalTax['term'][$row['term_id']]['term_name'];
 				$_subjectID = explode( ',', $row['subject_id'] );
 				$row['subject'] = $globalTax['subject'][$_subjectID[1]]['subject_name'];
-				foreach( $array_status as $key => $val )
-				{
-					$xtpl->assign( 'STATUS', array(
-						'key' => $key, //
-						'val' => $val, //
-						'selected' => ( $key == $row['status'] ) ? " selected=\"selected\"" : "" //
-					) );
-			
-					$xtpl->parse( 'main.row.status' );
-				}
-				//id="change_status_1" onchange="nv_chang_status('1', 'class');"
+
 				$row['class_status'] = getTaxSelectBox( $globalTax['class_reg_status'], 'class_status_' . $row['class_id'], $row['status'], 'change_status_' . $row['class_id'], '', '', 'onchange="nv_chang_status(\'' . $row['class_id'] . '\', \'class\');"' );
 				$xtpl->assign( 'ROW', $row );
 				$xtpl->parse( 'main.row' );
@@ -202,6 +193,7 @@ if( $action == 'add' )
 		$xtpl->assign( 'CLASS_TYPE_SLB', getTaxSelectBox( $globalTax['class_type'], 'class[class_type]', $class['class_type_id'], NULL, 'class_type_id', 'class_type_name' ) );
 		$xtpl->assign( 'TEST_TYPE_SLB', getTaxSelectBox( $globalTax['test_type'], 'class[test_type]', $class['test_type_id'], NULL, 'test_type_id', 'test_type_name' ) );
 		$xtpl->assign( 'WEEK_CB', getTaxCheckBox( $weeks_data, 'class[class_week]', $class['class_week'], NULL, 'value', 'label' ) );
+		$xtpl->assign( 'CLASS_STATUS', getTaxSelectBox( $globalTax['class_reg_status'], 'class[class_status]', $class['status'], NULL, '', '') );
 		$xtpl->parse( 'main.add' );
 	}
 }

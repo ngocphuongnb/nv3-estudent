@@ -35,6 +35,7 @@ $sql_create_module = $sql_drop_module;
 
 $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_teacher` (
   `teacher_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` mediumint(8) NOT NULL DEFAULT '0',
   `faculty_id` mediumint(8),
   `teacher_name` varchar(255) NOT NULL,
   `teacher_alias` varchar(255) NOT NULL,

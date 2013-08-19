@@ -115,6 +115,14 @@
                 </td>
 			</tr>
 		</tbody>
+        <tbody>
+			<tr>
+				<td style="width:150px"><strong>{LANG.class_status}</strong></td>
+				<td>
+                	{CLASS_STATUS}
+                </td>
+			</tr>
+		</tbody>
 		<tfoot>
 			<tr>
 				<td colspan="2" align="center"><input type="submit" value="{LANG.save}"/></td>
