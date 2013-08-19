@@ -21,7 +21,7 @@
 
 <table class="tab1">
     <thead>
-        </thead><td>{LANG.subject_name}</td>
+        <td>{LANG.subject_name}</td>
         <td style="width:100px">{LANG.subject_code}</td>
         <td style="width:100px">{LANG.faculty}</td>
         <td style="width:100px">{LANG.clpart}</td>
