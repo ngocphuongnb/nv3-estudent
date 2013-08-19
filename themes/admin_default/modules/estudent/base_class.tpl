@@ -23,7 +23,7 @@
 
 <table class="tab1">
     <thead>
-        </thead><td><strong>{LANG.base_class_name}</strong></td>
+        <td><strong>{LANG.base_class_name}</strong></td>
         <td style="width:100px;font-weight: bold">{LANG.faculty}</td>
         <td style="width:100px;font-weight: bold">{LANG.course}</td>
         <td style="width:100px;font-weight: bold">{LANG.number_student}</td>
