@@ -67,6 +67,10 @@ else
 				$array_status = array( $lang_module['deactive'], $lang_module['active'] );
 				$row['class'] = ( ++$i % 2 ) ? " class=\"second\"" : "";
 				$row['url_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;classid=" . $row['class_id'];
+				
+				$row['term'] = $globalTax['term'][$row['term_id']]['term_name'];
+				$_subjectID = explode( ',', $row['subject_id'] );
+				$row['subject'] = $globalTax['subject'][$_subjectID[1]]['subject_name'];
 				foreach( $array_status as $key => $val )
 				{
 					$xtpl->assign( 'STATUS', array(
@@ -77,6 +81,8 @@ else
 			
 					$xtpl->parse( 'main.row.status' );
 				}
+				//id="change_status_1" onchange="nv_chang_status('1', 'class');"
+				$row['class_status'] = getTaxSelectBox( $globalTax['class_reg_status'], 'class_status_' . $row['class_id'], $row['status'], 'change_status_' . $row['class_id'], '', '', 'onchange="nv_chang_status(\'' . $row['class_id'] . '\', \'class\');"' );
 				$xtpl->assign( 'ROW', $row );
 				$xtpl->parse( 'main.row' );
 			}

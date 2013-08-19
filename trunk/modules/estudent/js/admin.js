@@ -46,6 +46,15 @@ function nv_ajax_chang_res(res) {
 	return;
 }
 
+function vnp_update_class(class_id, field, value)
+{
+	var nv_timer = nv_settimeout_disable('change_class_' + field + '_' + class_id, 5000);
+	nv_ajax("post", script_name, nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=class_ajax_action&action=field&field_name=' + field + '&field_value=' + value + '&listid=' + class_id + '&num=' + nv_randomPassword(8), '', 'nv_ajax_chang_res');
+	return;
+}
+function vnp_class_change_res(res)
+{
+}
 function nv_module_del(listdid, table) {
 	if (confirm(nv_is_del_confirm[0])) {
 		nv_ajax('post', script_name, nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=' + table + '_ajax_action&action=delete&listid=' + listdid, '', 'nv_module_del_result');

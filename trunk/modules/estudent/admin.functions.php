@@ -58,11 +58,11 @@ $globalTax['study_status'] = array(
 								);
 								
 $globalTax['class_reg_status'] = array(
-									0 => $lang_module['class_canceled'],
+									0 => $lang_module['class_reg_closed'],
 									1 => $lang_module['class_normal'],
 									2 => $lang_module['class_edit_reg'],
-									3 => $lang_module['class_reg_closed'],
-									4 => $lang_module['class_based_class']
+									3 => $lang_module['class_suspended'],
+									4 => $lang_module['class_only_based_class']
 								);
 
 // Global config data
@@ -259,6 +259,7 @@ function getClassType($class_type_id = NULL)
 function getYear($year_id = NULL)
 {
 	$year = array();
+	$year[0] = array( 'year' => ' - - - - - - - ' );
 	$year[date('Y')] = array( 'year' => date('Y') );
 	
 	for( $i = 2010; $i <= 2020; $i++ )
@@ -314,14 +315,22 @@ function getTaxSelectBox( $termData, $name = NULL, $defaultValue = NULL, $select
 		}
 		elseif( is_array($termData) )
 		{
-			foreach( $termData as $taxData )
+			foreach( $termData as $taxKey => $taxData )
 			{
-				( $taxData[$valueKey] == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
-				$selectBox[] = '<option ' . $slt . ' value="' . $taxData[$valueKey] . '">' . $taxData[$titleKey] . '</option>';
+				if( !empty( $valueKey ) && !empty( $titleKey ) )
+				{
+					( $taxData[$valueKey] == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
+					$selectBox[] = '<option ' . $slt . ' value="' . $taxData[$valueKey] . '">' . $taxData[$titleKey] . '</option>';
+				}
+				else
+				{
+					( $taxKey == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
+					$selectBox[] = '<option ' . $slt . ' value="' . $taxKey . '">' . $taxData . '</option>';
+				}
 			}
 		}
 	}
-	return '<select name="' . $name . '" ' . $otherAttr . '>' . implode( PHP_EOL, $selectBox ) . '</select>';
+	return '<select id="' . $selectBoxID . '" name="' . $name . '" ' . $otherAttr . '>' . implode( PHP_EOL, $selectBox ) . '</select>';
 }
 
 function getTaxCheckBox( $termData, $name = NULL, $defaultValue = '', $selectBoxID = NULL, $valueKey = NULL, $titleKey = NULL )
