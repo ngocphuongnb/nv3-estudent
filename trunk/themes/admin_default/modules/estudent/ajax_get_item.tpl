@@ -61,7 +61,7 @@
         <button id="vnp-add" onclick="insertToPost('{SEARCH.container}', checkedInputs)">{LANG.add_selected}</button>
         <table class="tab1">
             <thead>
-            	</thead><td style="width: 30px"><input id="toggle-all" value="1" type="checkbox" {CHECK_ALL} /></td>
+            	<td style="width: 30px"><input id="toggle-all" value="1" type="checkbox" {CHECK_ALL} /></td>
                 <td></td>
             </thead>
             <!-- BEGIN: row -->

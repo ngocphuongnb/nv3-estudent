@@ -15,6 +15,7 @@ $teacher = array_merge($_teacher, $teacher);
 if( $teacherid )
 {
 	$sql = "UPDATE`" . NV_PREFIXLANG . "_" . $module_data . "_teacher` SET
+			`userid` = " . intval( $teacher['userid'] ) . ",
             `teacher_name` =" . $db->dbescape( $teacher['teacher_name'] ) . ",
 			`faculty_id` = " . intval( $teacher['faculty_id'] ) . ",
 			`teacher_alias` =  " . $db->dbescape( $teacher['teacher_alias'] ) . ",
@@ -27,6 +28,7 @@ else
 {
 	$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_teacher` VALUES (
             NULL,
+			" . intval( $teacher['userid'] ) . ",
 			" . intval( $teacher['faculty_id'] ) . ",
 			" . $db->dbescape( $teacher['teacher_name'] ) . ",
 			" . $db->dbescape( $teacher['teacher_alias'] ) . ",

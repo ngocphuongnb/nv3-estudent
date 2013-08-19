@@ -140,6 +140,7 @@ $lang_module['add_class'] = 'Thêm lớp học';
 $lang_module['class_name'] = 'Tên lớp';
 $lang_module['class_period'] = 'Tiết ';
 $lang_module['number_student'] = 'Số sinh viên ';
+$lang_module['class_status'] = 'Trạng thái lớp ';
 
 $lang_module['class_suspended'] = 'Hủy lớp';
 $lang_module['class_normal'] = 'Lớp bình thường';

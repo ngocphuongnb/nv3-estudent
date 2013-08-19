@@ -2,6 +2,16 @@
 <form action="{FORM_ACTION}" method="post">
 	<input name="save" type="hidden" value="1" />
 	<table class="tab1">
+    	<tbody class="second">
+        	<tr>
+                <td><strong>{LANG.select_member}:</strong><sup class="required">∗</sup></td>
+                <td>
+                	<input name="teacher[userid]" id="teacher_userid" type="text" value="{TEACHER.userid}" style="width:300px" maxlength="20" />
+                    
+                    <input type="button" value="Chọn" onclick="nv_open_browse_file( '{NV_BASE_ADMINURL}index.php?' + nv_name_variable + '=users&amp;' + nv_fc_variable + '=getuserid&amp;area=teacher_userid&amp;filtersql={FILTERSQL}', 'NVImg', '850', '600', 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' )" />
+             	</td>
+            </tr>
+        </tbody>
 		<tbody>
 			<tr>
 				<td style="width:150px"><strong>{LANG.teacher_name}</strong></td>
