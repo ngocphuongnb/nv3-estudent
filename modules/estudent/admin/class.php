@@ -14,6 +14,23 @@ define( 'CLASS_FUNCTION', true );
 $msg = array();
 $form_action = '';
 
+$search = array(
+					'is_search' => false,
+					'q' => '',
+					'faculty_id' => 0,
+					'per_page' => 10,
+					'page' => 0
+					);
+					
+if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
+{
+	$search['is_search'] = true;
+	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
+	$search['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+	$search['per_page'] = $nv_Request->get_int( 'per_page', 'get', 10 );
+	$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
+}
+
 $classid = $nv_Request->get_int( 'classid', 'post,get', 0 );
 $termid = $nv_Request->get_int( 'termid', 'post,get', 0 );
 
@@ -58,8 +75,34 @@ else
 		$xtpl->assign( 'GLANG', $lang_global );
 		$xtpl->assign( 'ADD_LINK', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=select_year" );
 		
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class`";
+		$_s = '';
+		
+		if( $search['is_search'] )
+		{
+			$_s = array();
+			if( $search['faculty_id'] > 0 )
+			{
+				$_s[] = "`faculty_id`=" . intval($search['faculty_id']);
+			}
+			if( $search['q'] )
+			{
+				$_s[] = "`class_name` LIKE '%" . $db->dblikeescape( $search['q'] ) . "%'";
+			}
+			//if( $search['faculty_id'] > 0 || !empty($search['q']) )
+			if( !empty($_s) )
+			{
+				$_s = "WHERE " . implode(' AND ', $_s );
+			}
+			else $_s = '';
+		}
+		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
+		
+		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class`" . $_s . " LIMIT " . $search['page'] . "," . $search['per_page'];
+		
 		$result = $db->sql_query( $sql );
+		
+		$result_all = $db->sql_query( "SELECT FOUND_ROWS()" );
+		list( $all_page ) = $db->sql_fetchrow( $result_all );
 	
 		if( $db->sql_numrows( $result ) > 0 )
 		{
@@ -231,8 +274,28 @@ elseif( $action == 'select_year' )
 	}
 	$xtpl->parse( 'main.select_year' );
 }
+else
+{
+	$generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );
+	$xtpl->assign( 'SEARCH_FACULTY', getTaxSelectBox( 'faculty', 'faculty_id', $search['faculty_id'] ) );
+	$showNumber = array();
+	$i = 1;
+	while( $i <= 20 )
+	{
+		$showNumber[$i] = array( 'value' => $i );
+		$i++;
+	}
+	$xtpl->assign( 'SHOW_NUMBER', getTaxSelectBox( $showNumber, 'per_page', $search['per_page'], NULL, 'value', 'value' ) );
+	
+	$xtpl->assign( 'SEARCH', $search );
+	$xtpl->assign( 'PAGE_GEN', $generate_page );
+}
 
 $xtpl->assign( 'FORM_ACTION', $form_action );
+$xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
+$xtpl->assign( 'NV_NAME_VARIABLE', NV_NAME_VARIABLE );
+$xtpl->assign( 'MODULE_NAME', $module_name );
+$xtpl->assign( 'OP', $op );
 
 $contents = vnp_msg($msg);
 $xtpl->parse( 'main' );
