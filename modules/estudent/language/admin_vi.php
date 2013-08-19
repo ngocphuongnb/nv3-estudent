@@ -75,6 +75,7 @@ $lang_module['success_update_student'] = 'Sửa sinh viên thành công';
 $lang_module['error_update_student'] = 'Lỗi, không thể sửa thông tin sinh viên';
 $lang_module['error_student_table_move_student'] = 'Lỗi không thể chuyển dữ liệu thành viên các bảng ';
 $lang_module['error_create_student_table'] = 'Lỗi không thể tạo bảng thành viên ';
+$lang_module['registered_student'] = 'Đã đăng ký';
 
 $lang_module['study_suspended'] = 'Đình chỉ học';
 $lang_module['study_normal'] = 'Bình thường';
@@ -110,6 +111,7 @@ $lang_module['add_term'] = 'Thêm học kỳ';
 $lang_module['term_weeks'] = 'Tuần học';
 $lang_module['term_weeks_note'] = 'Điện dạng: "Tuầnđầu-Tuầncuối"';
 $lang_module['select_term'] = 'Chọn kỳ học';
+$lang_module['term'] = 'Học kỳ';
 
 $lang_module['term_weeks_error'] = 'Định dạng tuần lỗi';
 $lang_module['term_year_error'] = 'Lỗi chưa có năm học';
@@ -139,11 +141,11 @@ $lang_module['class_name'] = 'Tên lớp';
 $lang_module['class_period'] = 'Tiết ';
 $lang_module['number_student'] = 'Số sinh viên ';
 
-$lang_module['class_canceled'] = 'Hủy lớp';
+$lang_module['class_suspended'] = 'Hủy lớp';
 $lang_module['class_normal'] = 'Lớp bình thường';
 $lang_module['class_edit_reg'] = 'Điều chỉnh đăng ký';
 $lang_module['class_reg_closed'] = 'Đóng đăng ký lớp';
-$lang_module['class_based_class'] = 'Chỉ dành cho lớp chính quy';
+$lang_module['class_only_based_class'] = 'Chỉ dành cho lớp chính quy';
 
 $lang_module['add_student_header'] = '<span class="row">Bạn đang thêm sinh viên cho khoa <strong>%s</strong> , năm học <strong>%s</strong></span>';
 

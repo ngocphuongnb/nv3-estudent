@@ -30,10 +30,31 @@ if( !empty($listid) )
 		$numrows = $db->sql_numrows( $result );
 		if( $numrows != 1 ) die( 'NO_' . $listid );
 		
-		$new_status = $nv_Request->get_bool( 'new_status', 'post' );
+		$new_status = $nv_Request->get_int( 'new_status', 'post', 0 );
 		$new_status = ( int )$new_status;
 		
 		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET `status`=" . $new_status . " WHERE `class_id`=" . intval($listid);
+		$db->sql_query( $sql );
+		if($db->sql_query( $sql ))
+		{
+			$contents = "OK_" . $lang['action_ok'];
+			nv_del_moduleCache( $module_name );
+		}
+		else $contents = "NOT_" . $lang['action_not'];
+	}
+	elseif( $action = 'field' )
+	{
+		$field_name = $nv_Request->get_string( 'field_name', 'post', '' );
+		$field_value= $nv_Request->get_string( 'field_value', 'post', '' );
+		$agrs = array();
+		if( $field_name == 'number_student' )
+		{
+			$agrs[] = '`' . $field_name . '`=' . intval( $field_value );
+		}
+		if( !empty($agrs) ) $agrs = implode( ',', $agrs );
+		else $agrs = '';
+		
+		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET " . $agrs . " WHERE `class_id`=" . intval($listid);
 		$db->sql_query( $sql );
 		if($db->sql_query( $sql ))
 		{
