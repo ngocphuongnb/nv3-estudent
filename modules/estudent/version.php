@@ -11,7 +11,7 @@ if( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 $module_version = array(
 	"name" => "Estudent", //
-	"modfuncs" => "main,manage,ajax_get_item,get_class,get_class_info", //
+	"modfuncs" => "main,manage,ajax_get_item,get_class,get_class_info,update_mark", //
 	"is_sysmod" => 0, //
 	"virtual" => 1, //
 	"version" => "1.0.00", //

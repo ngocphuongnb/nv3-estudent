@@ -28,18 +28,22 @@ if( $class_id > 0 )
 	if( $db->sql_numrows( $result ) == 1 )
 	{
 		$class = $db->sql_fetchrow( $result );
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_student_" . $class['faculty_id'] . "_" . $globalTax['term'][$class['term_id']]['year'] . "` WHERE `base_class_id`=" . $class['base_class_id'];
+		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_student_" . $class['faculty_id'] . "_" . $globalTax['term'][$class['term_id']]['year'] . "` WHERE ( `class_ids`='" . $class_id . "' OR `class_ids` REGEXP '^" . $class_id . "\\\,' OR `class_ids` REGEXP '\\\," . $class_id . "\\\,' OR `class_ids` REGEXP '\\\," . $class_id . "\$')";
 		$result = $db->sql_query( $sql );
+		
+		$class['year'] = $globalTax['term'][$class['term_id']]['year'];
 			
 		if( $db->sql_numrows( $result ) > 0 )
 		{
 			while($student = $db->sql_fetchrow( $result ))
 			{
-				$xtpl->assign( 'ROW', $row );
+				$student['class_id'] = $class_id;
+				$xtpl->assign( 'ROW', $student );
 				$xtpl->parse( 'main.loop' );
 			}
 		}
 	}
+	$xtpl->assign( 'CLASS', $class );
 	$vnp_content = '';
 	$xtpl->parse( 'main' );
 	$vnp_content .= $xtpl->text( 'main' );
