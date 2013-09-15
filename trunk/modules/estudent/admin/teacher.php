@@ -16,6 +16,7 @@ $form_action = '';
 $search = array(
 					'is_search' => false,
 					'q' => '',
+					'teacher_type' => 0,
 					'faculty_id' => 0,
 					'per_page' => 10,
 					'page' => 0
@@ -26,6 +27,7 @@ if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
 	$search['is_search'] = true;
 	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
 	$search['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+	$search['teacher_type'] = $nv_Request->get_int( 'teacher_type', 'get', 0 );
 	$search['per_page'] = $nv_Request->get_int( 'per_page', 'get', 10 );
 	$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
 }
@@ -59,16 +61,21 @@ else
 			{
 				$_s[] = "`faculty_id`=" . intval($search['faculty_id']);
 			}
+			if( $search['teacher_type'] > 0 )
+			{
+				$_s[] = "`teacher_type`=" . intval($search['teacher_type']);
+			}
 			if( $search['q'] )
 			{
 				$_s[] = "`teacher_name` LIKE '%" . $db->dblikeescape( $search['q'] ) . "%'";
 			}
-			if( $search['faculty_id'] > 0 || !empty($search['q']) )
+			if( $search['faculty_id'] > 0 || !empty($search['q']) || $search['teacher_type'] > 0 )
 			{
 				$_s = "WHERE " . implode(' AND ', $_s );
 			}
+			else $_s = '';
 		}
-		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
+		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;teacher_type=" . $search['teacher_type'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
 		
 		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_teacher` " . $_s . " LIMIT " . $search['page'] . "," . $search['per_page'];
 		$result = $db->sql_query( $sql );
@@ -109,7 +116,8 @@ else
 				'teacher_name' => '',
 				'teacher_alias' => '', 
 				'teacher_desc' => '',
-				'faculty_id' => 0
+				'faculty_id' => 0,
+				'teacher_type' => 1
 			);
 			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add";
 		}
@@ -144,7 +152,9 @@ if( $action == 'add' )
 	{
 		$teacher['teacher_desc'] = "<textarea style=\"width:100%;height:300px\" name=\"teacher[teacher_desc]\">" . $teacher['teacher_desc'] . "</textarea>";
 	}
+	unset($globalTax['teacher_type'][0]);
 	$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'teacher[faculty_id]', $teacher['faculty_id'] ) );
+	$xtpl->assign( 'TEACHER_TYPE', getTaxSelectBox( $globalTax['teacher_type'], 'teacher[teacher_type]', $teacher['teacher_type'] ) );
 	$xtpl->assign( 'TEACHER', $teacher );
 }
 else
@@ -159,7 +169,7 @@ else
 		$i++;
 	}
 	$xtpl->assign( 'SHOW_NUMBER', getTaxSelectBox( $showNumber, 'per_page', $search['per_page'], NULL, 'value', 'value' ) );
-	
+	$xtpl->assign( 'TEACHER_TYPE', getTaxSelectBox( $globalTax['teacher_type'], 'teacher_type', $search['teacher_type'] ) );
 	$xtpl->assign( 'SEARCH', $search );
 	$xtpl->assign( 'PAGE_GEN', $generate_page );
 }

@@ -14,18 +14,6 @@
 				<td><input class="txt-half" type="text" value="{BASE_CLASS.base_class_alias}" name="base_class[base_class_alias]" id="base_class_alias" maxlength="255" /><img src="{NV_BASE_SITEURL}images/refresh.png" width="16" class="refresh" onclick="get_alias('{ID}');" alt="Get alias..." height="16" /></td>
 			</tr>
 		</tbody>
-        <tbody>
-			<tr>
-				<td style="width:150px"><strong>{LANG.year}</strong></td>
-				<td>{YEAR_SLB}</td>
-			</tr>
-		</tbody>
-        <tbody>
-			<tr>
-				<td style="width:150px"><strong>{LANG.faculty}</strong></td>
-				<td>{FACULTY_SLB}</td>
-			</tr>
-		</tbody>
         <tbody class="second">
 			<tr>
 				<td style="width:150px"><strong>{LANG.level}</strong></td>

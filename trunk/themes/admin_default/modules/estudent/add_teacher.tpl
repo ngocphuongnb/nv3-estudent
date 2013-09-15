@@ -30,6 +30,12 @@
 				<td>{FACULTY_SLB}</td>
 			</tr>
 		</tbody>
+        <tbody>
+			<tr>
+				<td style="width:150px"><strong>{LANG.type}</strong></td>
+				<td>{TEACHER_TYPE}</td>
+			</tr>
+		</tbody>
 		<tbody>
 			<tr>
 				<td colspan="2">

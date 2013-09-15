@@ -7,7 +7,7 @@
  * @Createdate 2-9-2010 14:43
  */
 
-if( ! defined( 'NV_IS_FILE_ADMIN' ) || !defined( 'BASE_CLASS_FUNCTION' ) ) die( 'Stop!!!' );
+if( ! defined( 'NV_IS_MOD_ESTUDENT' ) && !defined('IS_DEAN') ) die( 'Stop!!!' );
 
 $_base_class = $nv_Request->get_typed_array( 'base_class', 'post', 'string', array() );
 $base_class = array_merge($_base_class, $base_class);
@@ -16,14 +16,13 @@ if( $base_classid )
 {
 	$sql = "UPDATE`" . NV_PREFIXLANG . "_" . $module_data . "_base_class` SET
             `base_class_name` =" . $db->dbescape( $base_class['base_class_name'] ) . ",
-			`faculty_id` = " . intval( $base_class['faculty_id'] ) . ",
+			`faculty_id` = " . intval( $userData['faculty_id'] ) . ",
 			`level_id` = " . intval( $base_class['level_id'] ) . ",
 			`base_class_alias` =  " . $db->dbescape( $base_class['base_class_alias'] ) . ",
             `base_class_desc`= " .  $db->dbescape( $base_class['base_class_desc'] ) . ",
 			`course_id`= " .  $db->dbescape( $base_class['course_id'] ) . ",
 			`teacher_id`= " .  $db->dbescape( $base_class['teacher_id'] ) . ",
 			`number_student` = " . intval( $base_class['number_student'] ) . ",
-			`year` = " . intval( $base_class['year'] ) . ",
 			`edit_time`=" . NV_CURRENTTIME . " 
 	WHERE `base_class_id` =" . $base_classid;
 	$db->sql_query( $sql );
@@ -32,7 +31,7 @@ else
 {
 	$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` VALUES (
             NULL,
-			" . intval( $base_class['faculty_id'] ) . ",
+			" . intval( $userData['faculty_id'] ) . ",
 			" . intval( $base_class['level_id'] ) . ",
 			" . $db->dbescape( $base_class['course_id'] ) . ",
 			" . $db->dbescape( $base_class['base_class_name'] ) . ",
@@ -40,8 +39,6 @@ else
 			" . $db->dbescape( $base_class['base_class_desc'] ) . ",
 			" . $db->dbescape( $base_class['teacher_id'] ) . ",
 			" . intval( $base_class['number_student'] ) . ",
-			'',
-			" . intval( $base_class['year'] ) . ",
 			0,
 			" . $admin_info['admin_id'] . ",
 			" . NV_CURRENTTIME . ",

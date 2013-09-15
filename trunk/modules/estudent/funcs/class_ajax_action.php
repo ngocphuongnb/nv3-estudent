@@ -7,7 +7,7 @@
  * @Createdate 2-10-2010 18:49
  */
 
-if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
+if( ! defined( 'NV_IS_MOD_ESTUDENT' ) || $userData['type'] != 'teacher'  || !in_array($userData['teacher_type'], array(2,3)) ) die( 'Stop!!!' );
 
 $listid = $nv_Request->get_string( 'listid', 'post', '' );
 $action = $nv_Request->get_string( 'action', 'post', '' );
@@ -16,7 +16,7 @@ if( !empty($listid) )
 {
 	if( $action == 'delete' )
 	{		
-		$sql = "DELETE FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `class_id` IN (" . $listid . ")";
+		$sql = "DELETE FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `faculty_id`= " . $userData['faculty_id'] . " AND `class_id` IN (" . $listid . ")";
 		if($db->sql_query( $sql ))
 		{
 			$contents = "OK_" . $lang['action_ok'];
@@ -25,7 +25,7 @@ if( !empty($listid) )
 	}
 	elseif( $action == 'status' )
 	{
-		$sql = "SELECT `status` FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `class_id`=" . intval($listid);
+		$sql = "SELECT `status` FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `faculty_id`= " . $userData['faculty_id'] . " AND `class_id`=" . intval($listid);
 		$result = $db->sql_query( $sql );
 		$numrows = $db->sql_numrows( $result );
 		if( $numrows != 1 ) die( 'NO_' . $listid );
@@ -33,7 +33,7 @@ if( !empty($listid) )
 		$new_status = $nv_Request->get_int( 'new_status', 'post', 0 );
 		$new_status = ( int )$new_status;
 		
-		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET `status`=" . $new_status . " WHERE `class_id`=" . intval($listid);
+		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET `status`=" . $new_status . " WHERE `faculty_id`= " . $userData['faculty_id'] . " AND `class_id`=" . intval($listid);
 		$db->sql_query( $sql );
 		if($db->sql_query( $sql ))
 		{
@@ -54,7 +54,7 @@ if( !empty($listid) )
 		if( !empty($agrs) ) $agrs = implode( ',', $agrs );
 		else $agrs = '';
 		
-		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET " . $agrs . " WHERE `class_id`=" . intval($listid);
+		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_class` SET " . $agrs . " WHERE `faculty_id`= " . $userData['faculty_id'] . " AND `class_id`=" . intval($listid);
 		$db->sql_query( $sql );
 		if($db->sql_query( $sql ))
 		{

@@ -45,6 +45,7 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `admin_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `add_time` int(11) NOT NULL DEFAULT '0',
   `edit_time` int(11) NOT NULL DEFAULT '0',
+  `teacher_type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`teacher_id`),
   UNIQUE KEY `teacher_alias` (`teacher_alias`)
@@ -167,6 +168,8 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `base_class_desc` mediumtext NOT NULL,
   `teacher_id` varchar(255) NOT NULL,
   `number_student` int(11) NOT NULL DEFAULT '0',
+  `time_table` mediumtext NOT NULL,
+  `year` int(11) NOT NULL,
   `weight` smallint(4) NOT NULL DEFAULT '0',
   `admin_id` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `add_time` int(11) NOT NULL DEFAULT '0',
@@ -199,6 +202,7 @@ $sql_create_module[] = "CREATE TABLE `" . $db_config['prefix'] . "_" . $lang . "
   `study_result` longtext NOT NULL,
   `subject_registered` longtext NOT NULL,
   `class_registered` longtext NOT NULL,
+  `class_ids` mediumtext NOT NULL,
   `subject_log` longtext NOT NULL,
   `off_class_count` longtext NOT NULL,
   

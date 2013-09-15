@@ -18,6 +18,7 @@ $search = array(
 					'is_search' => false,
 					'q' => '',
 					'faculty_id' => 0,
+					'term_id' => 0,
 					'per_page' => 10,
 					'page' => 0
 					);
@@ -27,6 +28,7 @@ if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
 	$search['is_search'] = true;
 	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
 	$search['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+	$search['term_id'] = $nv_Request->get_int( 'term_id', 'get', 0 );
 	$search['per_page'] = $nv_Request->get_int( 'per_page', 'get', 10 );
 	$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
 }
@@ -47,7 +49,7 @@ $class = array(
 				'class_room' => '',
 				'class_type_id' => 1,
 				'test_type_id' => 1,
-				'enter_mask' => 0,
+				'enter_mark' => 0,
 				'registered_student' => 0,
 				'number_student' => 0,
 				'student_data' => '',
@@ -84,6 +86,10 @@ else
 			{
 				$_s[] = "`faculty_id`=" . intval($search['faculty_id']);
 			}
+			if( $search['term_id'] > 0 )
+			{
+				$_s[] = "`term_id`=" . intval($search['term_id']);
+			}
 			if( $search['q'] )
 			{
 				$_s[] = "`class_name` LIKE '%" . $db->dblikeescape( $search['q'] ) . "%'";
@@ -95,7 +101,7 @@ else
 			}
 			else $_s = '';
 		}
-		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
+		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;term_id=" . $search['term_id'] . "&amp;q=" . $search['q'];
 		
 		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class`" . $_s . " LIMIT " . $search['page'] . "," . $search['per_page'];
 		
@@ -117,6 +123,7 @@ else
 				$row['subject'] = $globalTax['subject'][$_subjectID[1]]['subject_name'];
 
 				$row['class_status'] = getTaxSelectBox( $globalTax['class_reg_status'], 'class_status_' . $row['class_id'], $row['status'], 'change_status_' . $row['class_id'], '', '', 'onchange="nv_chang_status(\'' . $row['class_id'] . '\', \'class\');"' );
+				$row['class_mark'] = getTaxSelectBox( $globalTax['class_mark'], 'class_mark_' . $row['class_id'], $row['enter_mark'], 'change_class_enter_mark_' . $row['class_id'], '', '', 'onchange="vnp_update_class(\'' . $row['class_id'] . '\', \'enter_mark\', this.value);"' );
 				$xtpl->assign( 'ROW', $row );
 				$xtpl->parse( 'main.row' );
 			}
@@ -237,6 +244,7 @@ if( $action == 'add' )
 		$xtpl->assign( 'TEST_TYPE_SLB', getTaxSelectBox( $globalTax['test_type'], 'class[test_type]', $class['test_type_id'], NULL, 'test_type_id', 'test_type_name' ) );
 		$xtpl->assign( 'WEEK_CB', getTaxCheckBox( $weeks_data, 'class[class_week]', $class['class_week'], NULL, 'value', 'label' ) );
 		$xtpl->assign( 'CLASS_STATUS', getTaxSelectBox( $globalTax['class_reg_status'], 'class[class_status]', $class['status'], NULL, '', '') );
+		$xtpl->assign( 'CLASS_MARK', getTaxSelectBox( $globalTax['class_mark'], 'class[enter_mark]', $class['enter_mark'], NULL, '', '') );
 		$xtpl->parse( 'main.add' );
 	}
 }
@@ -278,6 +286,7 @@ else
 {
 	$generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );
 	$xtpl->assign( 'SEARCH_FACULTY', getTaxSelectBox( 'faculty', 'faculty_id', $search['faculty_id'] ) );
+	$xtpl->assign( 'SEARCH_TERM', getTaxSelectBox( 'term', 'term_id', $search['term_id'] ) );
 	$showNumber = array();
 	$i = 1;
 	while( $i <= 20 )
