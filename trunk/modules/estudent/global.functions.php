@@ -512,7 +512,7 @@ function updateStudentRegistedClass($base_class_id, $faculty_id, $year, $class_i
 		}
 	}
 	
-	$sql = "SELECT `class_registered` FROM `" . NV_PREFIXLANG . "_" . $module_data . "_" . $table . "` WHERE `base_class_id`=" . $base_class_id;
+	$sql = "SELECT `class_registered`, `class_ids` FROM `" . NV_PREFIXLANG . "_" . $module_data . "_" . $table . "` WHERE `base_class_id`=" . $base_class_id;
 	$result = $db->sql_query( $sql );
 	
 	if( $db->sql_numrows( $result ) > 0 )
@@ -525,12 +525,17 @@ function updateStudentRegistedClass($base_class_id, $faculty_id, $year, $class_i
 		{
 			$registered_class[$_class['term_id']] = $_class['class_id'];
 		}
+		$student['class_ids'] = explode(',', $student['class_ids']);
+		$student['class_ids'][] = $classids;
+		$student['class_ids'] = implode(',', $student['class_ids']);
 		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_" . $table . "` SET
-		`class_registered`=" . $db->dbescape(serialize($registered_class)) . " WHERE `base_class_id`=" . $base_class_id;
+		`class_registered`=" . $db->dbescape(serialize($registered_class)) . ",
+		`class_ids`=" . $db->dbescape($student['class_ids']) . " WHERE `base_class_id`=" . $base_class_id;
 		if( $db->sql_query( $sql ) )
 		{
 			$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_student` SET
-		`class_registered`=" . $db->dbescape(serialize($registered_class)) . " WHERE `base_class_id`=" . $base_class_id;
+		`class_registered`=" . $db->dbescape(serialize($registered_class)) . ",
+		`class_ids`=" . $db->dbescape($student['class_ids']) . " WHERE `base_class_id`=" . $base_class_id;
 			$db->sql_query( $sql );
 		}
 	}
