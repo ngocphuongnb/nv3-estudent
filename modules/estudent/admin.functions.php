@@ -19,6 +19,9 @@ $submenu['class'] = $lang_module['class_management'];
 $submenu['student'] = $lang_module['student_management'];
 $submenu['sp_data'] = 'Cài dữ liệu mẫu';
 
+$emailNo = array();
+$named = array();
+
 //$my_head .= '<link rel="Stylesheet" href="' . NV_BASE_SITEURL . 'modules/' . $module_file . '/data/bootstrap/css/bootstrap.css" type="text/css" />';
 
 $allow_func = array( 'main', 'ajax_get_item', 'sp_data',
@@ -33,349 +36,16 @@ $allow_func = array( 'main', 'ajax_get_item', 'sp_data',
 
 define( 'NV_IS_FILE_ADMIN', true );
 
-$globalTax = $globalConfig = array();
 
-// Taxonomy data
-$globalTax['faculty'] = getFaculty();
-$globalTax['teacher'] = getTeacher();
-$globalTax['subject'] = getSubject();
-$globalTax['test_type'] = getTestType();
-$globalTax['class_type'] = getClassType();
-$globalTax['level'] = getLevel();
-$globalTax['year'] = getYear();
-$globalTax['term'] = getTerm();
-$globalTax['course'] = getCourse();
-$globalTax['study_status'] = array(
-									0 => $lang_module['study_suspended'],
-									1 => $lang_module['study_normal'],
-									2 => $lang_module['study_warned_1'],
-									3 => $lang_module['study_warned_2'],
-									4 => $lang_module['study_warned_3'],
-									5 => $lang_module['study_reserved_1'],
-									6 => $lang_module['study_reserved_2'],
-									7 => $lang_module['study_reserved_3'],
-									8 => $lang_module['study_graduated']
-								);
-								
-$globalTax['class_reg_status'] = array(
-									0 => $lang_module['class_reg_closed'],
-									1 => $lang_module['class_normal'],
-									2 => $lang_module['class_edit_reg'],
-									3 => $lang_module['class_suspended'],
-									4 => $lang_module['class_only_based_class']
-								);
-
-// Global config data
-$globalConfig['day_period'] = 12;
-$globalConfig['week_data'] = array(
-									2 => $lang_module['monday'],
-									3 => $lang_module['tuesday'],
-									4 => $lang_module['wednesday'],
-									5 => $lang_module['thursday'],
-									6 => $lang_module['friday'],
-									7 => $lang_module['saturday'],
-									8 => $lang_module['sunday']
-								);
 include NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
 
-function vnp_msg($msg)
-{
-	if( !empty( $msg ) )
-	return '<div class="' . $msg['type'] . '">' . $msg['content'] . '</div>';
-}
 
-function getFaculty($faculty_id = NULL)
-{
-	global $db, $module_data;
-	
-	$_faculty = array();
-	if( $faculty_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_faculty` WHERE `faculty_id`=" . intval($faculty_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_faculty`";
-	}
-	$result = nv_db_cache( $sql );
-
-	foreach( $result as $row )
-	{
-		$_faculty[$row['faculty_id']] = $row;
-	}
-	return $_faculty;
-}
-
-function getTeacher($teacher_id = NULL)
-{
-	global $db, $module_data;
-	
-	$_teacher = array();
-	if( $teacher_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_teacher` WHERE `teacher_id`=" . intval($teacher_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_teacher`";
-	}
-	$result = nv_db_cache( $sql );
-
-	foreach( $result as $row )
-	{
-		$_teacher[$row['teacher_id']] = $row;
-	}
-	return $_teacher;
-}
-
-function getSubject($subject_id = NULL)
-{
-	global $db, $module_data;
-	
-	$_subject = array();
-	if( $subject_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_subject` WHERE `subject_id`=" . intval($subject_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_subject`";
-	}
-	$result = nv_db_cache( $sql );
-
-	foreach( $result as $row )
-	{
-		$_subject[$row['subject_id']] = $row;
-	}
-	return $_subject;
-}
-
-function getTerm($term_id = NULL)
-{
-	global $db, $module_data;
-	
-	$_term = array();
-	if( $term_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_term` WHERE `term_id`=" . intval($term_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_term`";
-	}
-	$result = nv_db_cache( $sql );
-
-	foreach( $result as $row )
-	{
-		$_term[$row['term_id']] = $row;
-	}
-	return $_term;
-}
-
-function getLevel($level_id = NULL)
-{
-	global $db, $module_data, $lang_module;
-	
-	$_level = array();
-	if( $level_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_level` WHERE `level_id`=" . intval($level_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_level`";
-	}
-	$result = nv_db_cache( $sql );
-	$_level[0] = array( 'level_id' => 0, 'level_name' => $lang_module['select_level'] );
-	foreach( $result as $row )
-	{
-		$_level[$row['level_id']] = $row;
-	}
-	return $_level;
-}
-
-function getTestType($test_type_id = NULL)
-{
-	$test_type = array(
-					array(
-						'test_type_id' => 0,
-						'test_type_name' => 'Không thi', 
-						'require_mark' => 0
-					),
-											array(
-						'test_type_id' => 1,
-						'test_type_name' => 'Tự luận', 
-						'require_mark' => 1
-					),
-											array(
-						'test_type_id' => 2,
-						'test_type_name' => 'Trắc nghiệm', 
-						'require_mark' => 1
-					),
-											array(
-						'test_type_id' => 3,
-						'test_type_name' => 'Vấn đáp', 
-						'require_mark' => 1
-					)
-				);
-	if( $test_type_id != NULL && isset( $test_type[$test_type_id] ) )
-	{
-		return $test_type[$test_type_id];
-	}
-	else return $test_type;
-}
-
-function getClassType($class_type_id = NULL)
-{
-	$class_type = array(
-					array(
-						'class_type_id' => 0,
-						'class_type_name' => 'None'
-					),
-					array(
-						'class_type_id' => 1,
-						'class_type_name' => 'Lý thuyết'
-					),
-					array(
-						'class_type_id' => 2,
-						'class_type_name' => 'Thực hành'
-					),
-					array(
-						'class_type_id' => 3,
-						'class_type_name' => 'Thực tập'
-					),
-					array(
-						'class_type_id' => 4,
-						'class_type_name' => 'Tham quan thực tế'
-					)
-				);
-	if( $class_type_id != NULL && isset( $class_type[$class_type_id] ) )
-	{
-		return $class_type[$class_type_id];
-	}
-	else return $class_type;
-}
-
-function getYear($year_id = NULL)
-{
-	$year = array();
-	$year[0] = array( 'year' => ' - - - - - - - ' );
-	$year[date('Y')] = array( 'year' => date('Y') );
-	
-	for( $i = 2010; $i <= 2020; $i++ )
-	{
-		$year[$i] = array( 'year' => $i );
-	}
-	if( $year_id != NULL && isset( $year[$year_id] ) )
-	{
-		return $year[$year_id];
-	}
-	else return $year;
-}
-
-function getCourse($course_id = NULL)
-{
-	global $lang_module;
-	
-	$course = array();
-	$course[0] = array( 'course_id' => 0, 'course_name' => $lang_module['select_course']);
-	$j = 1;
-	for( $i = 2010; $i <= 2020; $i++ )
-	{
-		$course['K' . $j] = array( 'course_id' => 'K' . $j, 'course_name' => 'K' . $j . ' - ' . $i );
-		$j++;
-	}
-	if( $course_id != NULL && isset( $course[$course_id] ) )
-	{
-		return $course[$course_id];
-	}
-	else return $course;
-}
-
-function getTaxSelectBox( $termData, $name = NULL, $defaultValue = NULL, $selectBoxID = NULL, $valueKey = NULL, $titleKey = NULL, $otherAttr = NULL )
-{
-	global $globalTax, $lang_module;
-	
-	$selectBox = array();
-	if( !empty( $termData ) )
-	{
-		//$xtpl = new XTemplate( "tax_select_box.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
-		//$xtpl->assign( 'LANG', $lang_module );
-		//$xtpl->assign( 'GLANG', $lang_global );
-		
-		if( in_array($termData, array('faculty', 'subject', 'teacher', 'level', 'term')) )
-		{
-			$_t = $globalTax[$termData];
-			$selectBox[] = '<option value="">' . $lang_module['select'] . '</option>';
-			foreach( $_t as $taxData )
-			{
-				( $taxData[$termData . '_id'] == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
-				$selectBox[] = '<option ' . $slt . ' value="' . $taxData[$termData . '_id'] . '">' . $taxData[$termData . '_name'] . '</option>';
-			}
-		}
-		elseif( is_array($termData) )
-		{
-			foreach( $termData as $taxKey => $taxData )
-			{
-				if( !empty( $valueKey ) && !empty( $titleKey ) )
-				{
-					( $taxData[$valueKey] == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
-					$selectBox[] = '<option ' . $slt . ' value="' . $taxData[$valueKey] . '">' . $taxData[$titleKey] . '</option>';
-				}
-				else
-				{
-					( $taxKey == $defaultValue ) ? $slt = 'selected="selected"' : $slt = '';
-					$selectBox[] = '<option ' . $slt . ' value="' . $taxKey . '">' . $taxData . '</option>';
-				}
-			}
-		}
-	}
-	return '<select id="' . $selectBoxID . '" name="' . $name . '" ' . $otherAttr . '>' . implode( PHP_EOL, $selectBox ) . '</select>';
-}
-
-function getTaxCheckBox( $termData, $name = NULL, $defaultValue = '', $selectBoxID = NULL, $valueKey = NULL, $titleKey = NULL )
-{
-	global $globalTax, $lang_module;
-	
-	if( !is_array($defaultValue) ) $defaultValue = explode(',', $defaultValue );
-	
-	$selectBox = array();
-	if( !empty( $termData ) )
-	{		
-		if( in_array($termData, array('faculty', 'subject', 'teacher', 'level', 'term')) )
-		{
-			$_t = $globalTax[$termData];
-			foreach( $_t as $taxData )
-			{
-				in_array( $taxData[$termData . '_id'], $defaultValue ) ? $slt = 'checked="checked"' : $slt = '';
-				$selectBox[] = $taxData[$termData . '_name'] . ': <input type="checkbox" ' . $slt . ' name="' . $name . '[]" value="' . $taxData[$termData . '_id'] . '"/>';
-			}
-		}
-		elseif( is_array($termData) )
-		{
-			foreach( $termData as $taxData )
-			{
-				in_array( $taxData[$valueKey], $defaultValue ) ? $slt = 'checked="checked"' : $slt = '';
-				$selectBox[] = '<label><input type="checkbox" name="' . $name . '[]" ' . $slt . ' value="' . $taxData[$valueKey] . '"/>' . $taxData[$titleKey] . '</label>';
-			}
-		}
-	}
-	return implode( PHP_EOL, $selectBox );
-}
-
-function getBaseClass($base_class_id = NULL)
+function getBaseClassByFacultyID($faculty_id = NULL)
 {
 	global $db, $module_data;
 	
 	$_base_class = array();
-	if( $base_class_id > 0 )
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` WHERE `base_class_id`=" . intval($base_class_id);
-	}
-	else
-	{
-		$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class`";
-	}
+	$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` WHERE `faculty_id`=" . intval($faculty_id);
 	$result = nv_db_cache( $sql );
 
 	foreach( $result as $row )
@@ -385,12 +55,175 @@ function getBaseClass($base_class_id = NULL)
 	return $_base_class;
 }
 
-function p($data = array())
+
+function user_generator()
 {
-	echo '<pre>';
-	print_r($data);
-	echo '</pre>';
-	die();
+	global $module_file, $emailNo, $named;
+
+	$firstNames = file(NV_ROOTDIR . '/modules/' . $module_file . '/admin/firstname.txt', FILE_IGNORE_NEW_LINES);
+	$lastNames = file(NV_ROOTDIR . '/modules/' . $module_file . '/admin/lastname.txt', FILE_IGNORE_NEW_LINES);
+	$regLogs= file_get_contents(NV_ROOTDIR . '/modules/' . $module_file . '/admin/reglog.txt');
+	//$regLogs = 'a:2:{s:4:"name";a:0:{}s:5:"email";a:0:{}}';
+	$regLogs = unserialize( $regLogs );
+	//p($regLogs);
+	/*$regLogs['name'] = array();
+	$regLogs['email'] = array();
+	p(serialize($regLogs));*/
+	$_name = $firstNames[rand(0,51)] . ' ' . str_replace('&nbsp;', ' ', $lastNames[rand(0,3866)]);
+	while( in_array( $_name, $regLogs['name'] ) )
+	{
+		$_name = $firstNames[rand(0,51)] . ' ' . str_replace('&nbsp;', ' ', $lastNames[rand(0,3866)]);
+	}
+	$regLogs['name'][] = $_name;
+	$regLogs['name'] = array_unique($regLogs['name']);
+	
+	$bd = '10/03/1992';
+	$alias = strtolower(change_alias($_name));
+	$username = str_replace('-', '', $alias);
+	$email = $username . '@gmail.com';
+	$regLogs['email'][] = $email;
+	$regLogs['email'] = array_unique($regLogs['email']);
+	//p(serialize($regLogs));
+	file_put_contents(NV_ROOTDIR . '/modules/' . $module_file . '/admin/reglog.txt', serialize($regLogs));
+	
+	$user_data = array(
+		'username' => $username,
+		'password' => '123456',
+		'email' => $email,
+		'full_name' => $_name,
+		'gender' => '1',
+		'sig' => '',
+		'question' => '123',
+		'answer' => '123',
+		'view_mail' => 1,
+		'birthday' => $bd,
+		'alias' => $alias,
+		'in_groups' => array()	
+	);
+	$rt = create_user($user_data);
+	return $rt;
+}
+
+function create_user($user_data)
+{
+	global $db_config, $db, $global_config, $crypt;
+	
+	$_user = $user_data;
+	
+	if( preg_match( "/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{4})$/", $_user['birthday'], $m ) )
+	{
+		$_user['birthday'] = mktime( 0, 0, 0, $m[2], $m[1], $m[3] );
+	}
+	else
+	{
+		$_user['birthday'] = 0;
+	}
+	
+	$password = $crypt->hash( $_user['password'] );
+	
+	$sql = "INSERT INTO `" . $db_config['dbsystem'] . "`.`" . NV_USERS_GLOBALTABLE . "` (
+		`userid`, `username`, `md5username`, `password`, `email`, `full_name`, `gender`, `birthday`, `sig`, `regdate`,
+		`question`, `answer`, `passlostkey`, `view_mail`,
+		`remember`, `in_groups`, `active`, `checknum`, `last_login`, `last_ip`, `last_agent`, `last_openid`, `idsite`)
+		VALUES (
+		NULL,
+		" . $db->dbescape( $_user['username'] ) . ",
+		" . $db->dbescape( nv_md5safe( $_user['username'] ) ) . ",
+		" . $db->dbescape( $password ) . ",
+		" . $db->dbescape( $_user['email'] ) . ",
+		" . $db->dbescape( $_user['full_name'] ) . ",
+		" . $db->dbescape( $_user['gender'] ) . ",
+		" . $_user['birthday'] . ",
+		" . $db->dbescape( $_user['sig'] ) . ",
+		" . NV_CURRENTTIME . ",
+		" . $db->dbescape( $_user['question'] ) . ",
+		" . $db->dbescape( $_user['answer'] ) . ",
+		'',
+		 " . $_user['view_mail'] . ",
+		 1,
+		 '" . implode( ',', $_user['in_groups'] ) . "', 1, '', 0, '', '', '', " . $global_config['idsite'] . ")";
+
+	$userid = $db->sql_query_insert_id( $sql );
+	return array( 'userid' => $userid, 'fullname' => $_user['full_name'], 'alias' => $_user['alias'], 'email' => $_user['email'] );
+}
+
+function base_class_generator()
+{
+	global $db, $module_data, $globalTax, $nv_Request, $admin_info;
+	
+	$index = $nv_Request->get_int( 'index', 'get', 0 );
+	
+	$faculty_id = $index;
+			
+	$faculty = $globalTax['faculty'][$faculty_id]['faculty_name'];
+	$rt = array();
+	
+	for( $i = 1; $i <= 5; $i++ )
+	{
+		$_rt['fullname'] = $faculty . ' ' . $i;
+		$_rt['faculty'] = $faculty;
+		$_teacher_id = $globalTax['teacher'][array_rand($globalTax['teacher'])]['teacher_id'];
+		
+		$rt[] = $_rt;
+		$sql = "INSERT INTO `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` VALUES (
+				NULL,
+				" . intval( $faculty_id ) . ",
+				" . intval( 1 ) . ",
+				" . $db->dbescape( 'K4' ) . ",
+				" . $db->dbescape( $_rt['fullname'] ) . ",
+				" . $db->dbescape( change_alias($_rt['fullname']) ) . ",
+				" . $db->dbescape( '' ) . ",
+				" . $db->dbescape( $_teacher_id ) . ",
+				" . intval( 45 ) . ",
+				0,
+				" . $admin_info['admin_id'] . ",
+				" . NV_CURRENTTIME . ",
+				" . NV_CURRENTTIME . ", 1);";
+		$_id = $db->sql_query_insert_id( $sql );
+	}
+	return $rt;	
+}
+
+function base_sample_data()
+{
+	global $db, $module_name;
+		$sample_data[] = "INSERT INTO `nv3_vi_estudent_faculty` (`faculty_id`, `faculty_name`, `faculty_alias`, `faculty_desc`, `weight`, `admin_id`, `add_time`, `edit_time`, `status`) VALUES
+	(1, 'Công nghệ thông tin', 'cong-nghe-thong-tin', '<br  />', 0, 1, 1376379383, 1376379383, 1),
+	(2, 'Điện', 'dien', '<br  />', 0, 1, 1376379388, 1376379388, 1),
+	(3, 'Điện tử viễn thông', 'dien-tu-vien-thong', '<br  />', 0, 1, 1376379400, 1376379400, 1),
+	(4, 'Toán tin ứng dụng', 'toan-tin-ung-dung', '<br  />', 0, 1, 1376379414, 1376379414, 1),
+	(5, 'Kỹ thuật hóa học', 'ky-thuat-hoa-hoc', '<br  />', 0, 1, 1376379427, 1376379427, 1),
+	(6, 'Cơ khí', 'co-khi', '<br  />', 0, 1, 1376379439, 1376379439, 1),
+	(7, 'Cơ điện tử', 'co-dien-tu', '<br  />', 0, 1, 1376379447, 1376379447, 1);";
+	
+	
+	$sample_data[] = "INSERT INTO `nv3_vi_estudent_level` (`level_id`, `level_name`, `level_alias`, `level_desc`, `weight`, `admin_id`, `add_time`, `edit_time`, `status`) VALUES
+	(1, 'Đại học', 'dai-hoc', '', 0, 1, 1376379277, 1376379277, 1),
+	(2, 'Cao Đẳng', 'cao-dang', '', 0, 1, 1376379293, 1376379293, 1),
+	(3, 'Tại chức', 'tai-chuc', '', 0, 1, 1376379309, 1376379309, 1),
+	(4, 'Liên thông', 'lien-thong', '', 0, 1, 1376379319, 1376379319, 1),
+	(5, 'Chất lượng cao', 'chat-luong-cao', '', 0, 1, 1376379329, 1376379329, 1);";
+	
+	
+	$sample_data[] = "INSERT INTO `nv3_vi_estudent_term` (`term_id`, `year`, `weeks`, `term_name`, `admin_id`, `add_time`, `edit_time`, `status`) VALUES
+	(1, 2013, '1-16', '20131', 1, 1376379893, 1376379893, 1),
+	(2, 2013, '18-36', '20132', 1, 1376379906, 1376379906, 1),
+	(3, 2013, '40-48', '20133', 1, 1376379940, 1376379940, 1),
+	(4, 2012, '40-48', '20123', 1, 1376379955, 1376379955, 1),
+	(5, 2012, '17-36', '20122', 1, 1376379968, 1376379968, 1),
+	(6, 2012, '1-16', '20121', 1, 1376379978, 1376379978, 1);";
+	
+	
+	$sample_data[] = "INSERT INTO `nv3_vi_estudent_subject` (`subject_id`, `faculty_id`, `subject_name`, `subject_code`, `subject_alias`, `subject_desc`, `weight`, `admin_id`, `add_time`, `edit_time`, `practice_require`, `clpart`, `status`) VALUES
+	(1, 1, 'Kỹ thuật lập trinh', 'KTLT-D', 'ky-thuat-lap-trinh', '', 2, 0, 1376379819, 1376379819, 0, 40, 1),
+	(2, 1, 'Java', 'JAVA-CNTT', 'java-cntt', '', 1, 0, 1376379853, 1376379853, 1, 40, 1),
+	(3, 1, 'Vẽ kỹ thuật', 'VG-DTVT', 'vg-dtvt', '', 1, 0, 1376379879, 1376379879, 1, 40, 1);";
+	
+	foreach( $sample_data as $_spdt )
+	{
+		$db->sql_query($_spdt);
+	}
+	nv_del_moduleCache( $module_name );
 }
 
 ?>

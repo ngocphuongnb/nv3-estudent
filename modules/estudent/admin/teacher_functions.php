@@ -18,6 +18,7 @@ if( $teacherid )
 			`userid` = " . intval( $teacher['userid'] ) . ",
             `teacher_name` =" . $db->dbescape( $teacher['teacher_name'] ) . ",
 			`faculty_id` = " . intval( $teacher['faculty_id'] ) . ",
+			`teacher_type` = " . intval( $teacher['teacher_type'] ) . ",
 			`teacher_alias` =  " . $db->dbescape( $teacher['teacher_alias'] ) . ",
             `teacher_desc`= " .  $db->dbescape( $teacher['teacher_desc'] ) . ",
 			`edit_time`=" . NV_CURRENTTIME . " 
@@ -37,7 +38,9 @@ else
 			0,
 			" . $admin_info['admin_id'] . ",
 			" . NV_CURRENTTIME . ",
-			" . NV_CURRENTTIME . ", 1);";
+			" . NV_CURRENTTIME . ",
+			" . intval( $teacher['teacher_type'] ) . ",
+			1);";
 	$_id = $db->sql_query_insert_id( $sql );
 }
 

@@ -43,6 +43,9 @@ $lang_module['hometown'] = 'Quê quán';
 $lang_module['address'] = 'Địa chỉ';
 $lang_module['email'] = 'Email';
 $lang_module['phone'] = 'Điện thoại';
+$lang_module['all'] = 'Tất cả';
+$lang_module['type'] = 'Loại';
+$lang_module['year'] = 'Năm';
 
 $lang_module['add_selected'] = 'Thêm mục đã chọn';
 
@@ -61,6 +64,12 @@ $lang_module['teacher_desc'] = 'Giới thiệu giảng viên';
 $lang_module['add_teacher'] = 'Thêm giảng viên';
 $lang_module['teacher'] = 'Giảng viên';
 $lang_module['choose_teacher'] = 'Chọn giảng viên';
+
+$lang_module['dean'] = 'Trưởng khoa';
+$lang_module['second_dean'] = 'Phó khoa';
+$lang_module['normal_teacher'] = 'Giảng viên';
+$lang_module['practice_teacher'] = 'Thực tập viên';
+$lang_module['assistant_teacher'] = 'Trợ giảng';
 
 $lang_module['student_management'] = 'Quản lý sinh viên';
 $lang_module['student_name'] = 'Tên sinh viên';
@@ -147,6 +156,12 @@ $lang_module['class_normal'] = 'Lớp bình thường';
 $lang_module['class_edit_reg'] = 'Điều chỉnh đăng ký';
 $lang_module['class_reg_closed'] = 'Đóng đăng ký lớp';
 $lang_module['class_only_based_class'] = 'Chỉ dành cho lớp chính quy';
+$lang_module['class_mark'] = 'Nhập điểm';
+
+$lang_module['mark_not_entered'] = 'Chưa nhập điểm';
+$lang_module['mark_required'] = 'Yêu cầu nhập điểm';
+$lang_module['mark_sent'] = 'Đã gửi điểm';
+$lang_module['mark_completed'] = 'Nhập điểm xong';
 
 $lang_module['add_student_header'] = '<span class="row">Bạn đang thêm sinh viên cho khoa <strong>%s</strong> , năm học <strong>%s</strong></span>';
 

@@ -1,6 +1,6 @@
 <!-- BEGIN: main -->
-<span class="vnp-add"><a class="add_icon" href="{ADD_LINK}">{LANG.add_class}</a></span>
-<form action="{FORM_ACTION}" method="get">    
+<span class="vnp-add"><a class="vnp-button" href="{ADD_LINK}">{LANG.add_class}</a></span>
+<form class="vnp-search" action="{FORM_ACTION}" method="get">    
     <input name="{NV_NAME_VARIABLE}" type="hidden" value="{MODULE_NAME}" />
     <input name="{NV_OP_VARIABLE}" type="hidden" value="{OP}" />
     <input name="search" type="hidden" value="1" />
@@ -11,11 +11,19 @@
                 <td><input name="q" value="{SEARCH.q}" type="text" /></td>
                 <td>{LANG.term}</td>
                 <td>{SEARCH_TERM}</td>
-                <td>{LANG.faculty}</td>
-                <td>{SEARCH_FACULTY}</td>
                 <td>{LANG.number}</td>
                 <td>{SHOW_NUMBER}</td>
-                <td><input type="submit" value="{LANG.search}" class="btn btn-primary" /></td>
+         	</tr>
+            <tr>
+            	<td style="width:75px">{LANG.number_student}</td>
+                <td><input name="number_student" value="{SEARCH.number_student}" type="text" /></td>
+            	<td>{LANG.class_mark}</td>
+                <td>{ENTER_MARK}</td>
+                <td>{LANG.status}</td>
+                <td>{STATUS}</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="6"><input type="submit" value="{LANG.search}" class="btn btn-primary" /></td>
            	</tr>
         </tbody>
     </table>
@@ -52,12 +60,12 @@
     <!-- END: row -->
     <tfoot>
         <tr>
-            <td colspan="9" align="center"><input type="submit" value="{LANG.save}"/></td>
+            <td colspan="9" align="center"></td>
         </tr>
     </tfoot>
 </table>
 <center>
-    <div class="pagination" style="margin-top: -15px">
+    <div class="pagination">
         <ul class="vnp-pagination">
         {PAGE_GEN}
         </ul>

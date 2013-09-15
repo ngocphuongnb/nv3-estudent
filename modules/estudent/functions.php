@@ -10,6 +10,13 @@
 if( ! defined( 'NV_SYSTEM' ) ) die( 'Stop!!!' );
 
 define( 'NV_IS_MOD_ESTUDENT', true );
+include NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
+
+$userData = checkUserPosition($user_info['userid']);
+if( $op == 'manage' )
+{
+	//p(checkUserPosition(3));
+}
 
 
 

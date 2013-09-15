@@ -9,6 +9,28 @@
 
 if( ! defined( 'NV_IS_MOD_ESTUDENT' ) ) die( 'Stop!!!' );
 
+function vnp_page_content($menu, $vnp_content)
+{
+	global $module_file, $lang_module, $module_info;
+
+	$xtpl = new XTemplate( "manage.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
+	$xtpl->assign( 'LANG', $lang_module );
+	
+	if( !empty( $menu ) )
+	{
+		foreach( $menu as $menuKey => $menuValue )
+		{
+			$xtpl->assign( 'MENU', $menuValue );
+			$xtpl->parse( 'main.menu.loop' );
+		}
+		$xtpl->parse( 'main.menu' );
+	}
+	
+	$xtpl->assign( 'CONTENT', $vnp_content );
+	$xtpl->parse( 'main' );
+	return $xtpl->text( 'main' );
+}
+
 
 
 ?>

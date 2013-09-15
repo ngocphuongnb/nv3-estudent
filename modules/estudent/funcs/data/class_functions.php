@@ -7,7 +7,7 @@
  * @Createdate 2-9-2010 14:43
  */
 
-if( ! defined( 'NV_IS_FILE_ADMIN' ) || !defined( 'CLASS_FUNCTION' ) ) die( 'Stop!!!' );
+if( ! defined( 'NV_IS_MOD_ESTUDENT' ) && !defined('IS_DEAN') ) die( 'Stop!!!' );
 
 $_class = $nv_Request->get_array( 'class', 'post', 'string', array() );
 $class = array_merge( $class, $_class );

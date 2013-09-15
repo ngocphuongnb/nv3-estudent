@@ -7,7 +7,8 @@
  * @Createdate 2-9-2010 14:43
  */
 
-if( ! defined( 'NV_IS_FILE_ADMIN' ) ) die( 'Stop!!!' );
+
+if( ! defined( 'NV_IS_MOD_ESTUDENT' ) && !defined('IS_DEAN') ) die( 'Stop!!!' );
 
 define( 'BASE_CLASS_FUNCTION', true );
 $msg = array();
@@ -26,7 +27,7 @@ if( $nv_Request->get_string( 'search', 'get', '' ) == 1 )
 {
 	$search['is_search'] = true;
 	$search['q'] = $nv_Request->get_string( 'q', 'get', '' );
-	$search['faculty_id'] = $nv_Request->get_int( 'faculty_id', 'get', 0 );
+	$search['faculty_id'] = $userData['faculty_id'];
 	$search['course_id'] = $nv_Request->get_string( 'course_id', 'get', '' ); 
 	$search['per_page'] = $nv_Request->get_int( 'per_page', 'get', 10 );
 	$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
@@ -51,16 +52,13 @@ else
 		$xtpl = new XTemplate( "base_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
 		$xtpl->assign( 'LANG', $lang_module );
 		$xtpl->assign( 'GLANG', $lang_global );
-		$xtpl->assign( 'ADD_LINK', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add" );
-		$_s = '';
+		$xtpl->assign( 'ADD_LINK', NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/base-class&amp;action=add" );
+		$_s = ' WHERE `faculty_id`=' . intval($userData['faculty_id']);
 		
 		if( $search['is_search'] )
 		{
 			$_s = array();
-			if( $search['faculty_id'] > 0 )
-			{
-				$_s[] = "`faculty_id`=" . intval($search['faculty_id']);
-			}
+			$_s[] = "`faculty_id`=" . intval($userData['faculty_id']);
 			if( $search['course_id'] )
 			{
 				$_s[] = "`course_id`=" . $db->dbescape($search['course_id']);
@@ -75,7 +73,7 @@ else
 			}
 			else $_s = '';
 		}
-		$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;faculty_id=" . $search['faculty_id'] . "&amp;q=" . $search['q'];
+		$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/base-class&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;q=" . $search['q'];
 		
 		$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_base_class` " . $_s . " LIMIT " . $search['page'] . "," . $search['per_page'];
 		$result = $db->sql_query( $sql );
@@ -85,11 +83,13 @@ else
 	
 		if( $db->sql_numrows( $result ) > 0 )
 		{
+			$i = 1;
 			while( $row = $db->sql_fetchrow( $result ) )
 			{
 				$array_status = array( $lang_module['deactive'], $lang_module['active'] );
 				$row['class'] = ( ++$i % 2 ) ? " class=\"second\"" : "";
-				$row['url_edit'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;base_classid=" . $row['base_class_id'];
+				$row['url_edit'] = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/base-class&amp;action=add&amp;base_classid=" . $row['base_class_id'];
+				$row['url_set_time_table'] = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/time-table&amp;base_classid=" . $row['base_class_id'];
 				foreach( $array_status as $key => $val )
 				{
 					$xtpl->assign( 'STATUS', array(
@@ -104,6 +104,7 @@ else
 				$row['course'] = $globalTax['course'][$row['course_id']]['course_name'];
 				$xtpl->assign( 'ROW', $row );
 				$xtpl->parse( 'main.row' );
+				$i++;
 			}
 		}
 	}
@@ -117,14 +118,12 @@ else
 				'base_class_name' => '',
 				'base_class_alias' => '', 
 				'base_class_desc' => '',
-				'faculty_id' => 0,
+				'faculty_id' => $userData['faculty_id'],
 				'level_id' => 0,
 				'number_student' => 0,
 				'course_id' => '',
-				'time_table' => '',
-				'year' => 2013
 			);
-			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add";
+			$form_action = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/base-class&amp;action=add";
 		}
 		else
 		{
@@ -133,7 +132,7 @@ else
 		
 			if( $db->sql_numrows( $result ) != 1 )
 			{
-				Header( "Location: " . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&action=add" );
+				Header( "Location: " . NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "/base-class&action=add" );
 				die();
 			}
 		
@@ -151,7 +150,7 @@ else
 				$base_class['teacher_title'] = implode(PHP_EOL, $_teacher_title);
 			}
 					
-			$form_action = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "&amp;action=add&amp;base_classid=" . $base_classid;			
+			$form_action = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/base-class&amp;action=add&amp;base_classid=" . $base_classid;			
 		}		
 	}
 }
@@ -170,10 +169,8 @@ if( $action == 'add' )
 	{
 		$base_class['base_class_desc'] = "<textarea style=\"width:100%;height:300px\" name=\"base_class[base_class_desc]\">" . $base_class['base_class_desc'] . "</textarea>";
 	}
-	$xtpl->assign( 'FACULTY_SLB', getTaxSelectBox( 'faculty', 'base_class[faculty_id]', $base_class['faculty_id'] ) );
 	$xtpl->assign( 'LEVEL_SLB', getTaxSelectBox( 'level', 'base_class[level_id]', $base_class['level_id'] ) );
 	$xtpl->assign( 'COURSE_SLB', getTaxSelectBox( $globalTax['course'], 'base_class[course_id]', $base_class['course_id'], NULL, 'course_id', 'course_name' ) );
-	$xtpl->assign( 'YEAR_SLB', getTaxSelectBox( $globalTax['year'], 'base_class[year]', $base_class['year'], NULL, 'year', 'year' ) );
 	
 	$xtpl->assign( 'BASE_CLASS', $base_class );
 }
@@ -182,7 +179,6 @@ else
 	$generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );
 	$teacher_type = $globalTax['teacher_type'];
 	$teacher_type['all'] = $lang_module['all'];
-	$xtpl->assign( 'SEARCH_FACULTY', getTaxSelectBox( 'faculty', 'faculty_id', $search['faculty_id'] ) );
 	
 	$xtpl->assign( 'SEARCH_COURSE', getTaxSelectBox( $globalTax['course'], 'course_id', $search['course_id'], NULL, 'course_id', 'course_name' ) );
 	$showNumber = array();
@@ -202,14 +198,10 @@ $xtpl->assign( 'FORM_ACTION', $form_action );
 $xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 $xtpl->assign( 'NV_NAME_VARIABLE', NV_NAME_VARIABLE );
 $xtpl->assign( 'MODULE_NAME', $module_name );
-$xtpl->assign( 'OP', $op );
+$xtpl->assign( 'OP', $op . '/base-class' );
 
-$contents = vnp_msg($msg);
+$vnp_content = vnp_msg($msg);
 $xtpl->parse( 'main' );
-$contents .= $xtpl->text( 'main' );
-
-include ( NV_ROOTDIR . '/includes/header.php' );
-echo nv_admin_theme( $contents );
-include ( NV_ROOTDIR . '/includes/footer.php' );
+$vnp_content .= $xtpl->text( 'main' );
 
 ?>

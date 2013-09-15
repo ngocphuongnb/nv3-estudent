@@ -11,12 +11,12 @@ if( ! defined( 'NV_ADMIN' ) or ! defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 $module_version = array(
 	"name" => "Estudent", //
-	"modfuncs" => "main", //
+	"modfuncs" => "main,manage,ajax_get_item,get_class,get_class_info", //
 	"is_sysmod" => 0, //
 	"virtual" => 1, //
 	"version" => "1.0.00", //
-	"date" => "Wed, 20 Oct 2010 00:00:00 GMT", //
-	"author" => "VINADES (contact@vinades.vn)", //
+	"date" => "Thur, 13 Sep 2013 00:00:00 GMT", //
+	"author" => "Nguyen Ngoc Phuong (nguyenngocphuongnb@gmail.com)", //
 	"note" => "", //
 	"uploads_dir" => array( $module_name )
 );
