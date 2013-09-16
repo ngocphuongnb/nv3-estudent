@@ -11,6 +11,8 @@ if( !defined( 'NV_MAINFILE' ) ) die( 'Stop!!!' );
 
 $globalTax = $globalConfig = array();
 
+$max_miss_class = 3;
+
 // Taxonomy data
 $globalTax['faculty'] = getFaculty();
 $globalTax['teacher'] = getTeacher();
@@ -53,6 +55,11 @@ $globalTax['teacher_type'] = array(
 									3 => $lang_module['dean'],
 									4 => $lang_module['practice_teacher'],
 									5 => $lang_module['assistant_teacher']
+								);
+$globalTax['roll_call'] = array(
+									0 => $lang_module['roll_call_none'],
+									1 => $lang_module['roll_call_half'],
+									2 => $lang_module['roll_call_full']
 								);
 
 // Global config data
@@ -230,6 +237,7 @@ function checkUserPosition($userid)
 		$result = $db->sql_query( $sql );
 	
 		if( $db->sql_numrows( $result ) == 1 )
+		//if(0)
 		{
 			$data = $db->sql_fetchrow( $result );
 			$data['type'] = 'teacher';
@@ -490,6 +498,7 @@ function updateStudentRegistedClass($base_class_id, $faculty_id, $year, $class_i
 	
 	
 	$table = 'student_' . $faculty_id . '_' . $year;
+
 	
 	$class_ids = explode(',', $class_ids);
 	$classids = array();
@@ -498,7 +507,6 @@ function updateStudentRegistedClass($base_class_id, $faculty_id, $year, $class_i
 		if(!empty($_classid) ) $classids[] = intval($_classid);
 	}
 	$classids = implode(',', $classids);
-
 	$sql = "SELECT `class_id`, `term_id`, `class_time`, `class_week`, `subject_id` FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `class_id` IN (" . $classids . ")";
 	$result = $db->sql_query( $sql );
 	
@@ -526,7 +534,11 @@ function updateStudentRegistedClass($base_class_id, $faculty_id, $year, $class_i
 			$registered_class[$_class['term_id']] = $_class['class_id'];
 		}
 		$student['class_ids'] = explode(',', $student['class_ids']);
-		$student['class_ids'][] = $classids;
+		
+		$__class_ids = explode(',', $classids);
+		
+		$student['class_ids'] = array_merge($student['class_ids'], $__class_ids);
+		$student['class_ids'] = array_filter(array_unique($student['class_ids']));
 		$student['class_ids'] = implode(',', $student['class_ids']);
 		$sql = "UPDATE `" . NV_PREFIXLANG . "_" . $module_data . "_" . $table . "` SET
 		`class_registered`=" . $db->dbescape(serialize($registered_class)) . ",

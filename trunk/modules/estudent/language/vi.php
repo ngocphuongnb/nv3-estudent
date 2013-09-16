@@ -182,6 +182,11 @@ $lang_module['mark_not_entered'] = 'Chưa nhập điểm';
 $lang_module['mark_required'] = 'Yêu cầu nhập điểm';
 $lang_module['mark_sent'] = 'Đã gửi điểm';
 $lang_module['mark_completed'] = 'Nhập điểm xong';
+$lang_module['roll_call'] = 'Điểm danh';
+
+$lang_module['roll_call_none'] = 'Nghỉ học';
+$lang_module['roll_call_half'] = 'Đi học muộn';
+$lang_module['roll_call_full'] = 'Có mặt';
 
 $lang_module['add_student_header'] = '<span class="row">Bạn đang thêm sinh viên cho khoa <strong>%s</strong> , năm học <strong>%s</strong></span>';
 

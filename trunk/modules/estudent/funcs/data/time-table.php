@@ -13,6 +13,7 @@ if( $userData['type'] == 'teacher' )
 {
 	$base_classid = $nv_Request->get_int( 'base_classid', 'post,get', 0 );
 	$term_id = $nv_Request->get_int( 'term_id', 'post,get', 0 );
+	$base_class = array();
 	
 	if( $nv_Request->get_int( 'save', 'post', 0 ) == 1 )
 	{

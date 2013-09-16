@@ -24,9 +24,13 @@ if( $class_id > 0 )
 	$sql = "SELECT * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE `class_id`=" . $class_id;
 	$result = $db->sql_query( $sql );
 	
-	$xtpl = new XTemplate( "enter_mark_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
+	$my_head .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . 'modules/' . $module_file . '/data/jquery-ui.js"></script>';
+	$my_head .= '<link type="text/css" href="' . NV_BASE_SITEURL . 'modules/' . $module_file . '/data/jquery-ui.css" rel="stylesheet" type="text/css" />';
+	
+	$xtpl = new XTemplate( "enter_roll_call_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
 	$xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'GLANG', $lang_global );
+	$xtpl->assign( 'TODAY', date('d/m/Y') );
 		
 	if( $db->sql_numrows( $result ) == 1 )
 	{
@@ -43,45 +47,54 @@ if( $class_id > 0 )
 		{
 			while($student = $db->sql_fetchrow( $result ))
 			{
-				if( !empty($student['study_result']) )
+				$student['miss_class'] = 0;
+				$student['miss_class_desc'] = '';
+				$student['test_status'] = 'Được thi';
+				if( !empty($student['off_class_count']) )
 				{
-					$mark = unserialize($student['study_result']);
-					//p($mark);
-					if( isset($mark[$class_id]) )
+					$roll_call = unserialize($student['off_class_count']);
+					//p($roll_call);
+					if( isset($roll_call[$class_id]) )
 					{
-						$time_mark = $mark[$class_id]['time'];
-						$end_mark = $mark[$class_id]['end'];
+						$roll_call = $roll_call[$class_id];
+						
+						$i = 0;
+						foreach( $roll_call as $_roll_call )
+						{
+							$_roll_data = explode('-', $_roll_call);
+							if( $_roll_data[1] == 1 )
+							{
+								$i += 0.5;
+								$student['miss_class_desc'][] = date( "d/m/Y", $_roll_data[0] ) . ' muộn học';
+							}
+							elseif( $_roll_data[1] == 0 )
+							{
+								$i += 1;
+								$student['miss_class_desc'][] = date( "d/m/Y", $_roll_data[0] ) . ' nghỉ học';
+							}
+						}
+						$student['miss_class'] = $i;
+						$student['miss_class_desc'] = implode('<br />', $student['miss_class_desc'] );
 					}
-					else
-					{
-						$time_mark = $end_mark = '';
-					}
-				}
-				else $time_mark = $end_mark = '';
-				$student['class_id'] = $class_id;
-				if( $class['enter_mark'] == 1 || $class['enter_mark'] == 0 )
-				{
-					$student['time_mark'] = '<input type="text" id="std-time-' . $student['student_id'] . '" value="' . $time_mark . '" class="std-id" onchange="updateStdMark(' . $student['student_id'] . ', ' . $class['class_id'] . ',\'time\', this.value)" />';
 					
-					$student['end_mark'] = '<input type="text" id="std-end-' . $student['student_id'] . '" value="' . $end_mark . '" class="std-id" onchange="updateStdMark(' . $student['student_id'] . ', ' . $class['class_id'] . ',\'end\', this.value)" />';
+					if( $student['miss_class'] > $max_miss_class ) $student['test_status'] = 'Đình chỉ thi';
 				}
-				else
-				{
-					$student['time_mark'] = $time_mark;
-					$student['end_mark'] = $end_mark;
-				}
+				else $roll_call = '';
+				$student['class_id'] = $class_id;
+				
+				$current_roll_call_stt = 2;
+				
+				$student['vnp_roll_call'] = getTaxSelectBox($globalTax['roll_call'], 'roll_call_' . $student['student_id'], $current_roll_call_stt, 'change_student_roll_call_' . $student['student_id'], '', '' ) . '<input type="button" onclick="vnp_roll_call(\'' . $class_id . '\', \'' . $student['student_id'] . '\');" value="Xác nhận"/>';
 				$xtpl->assign( 'ROW', $student );
 				$xtpl->parse( 'main.loop' );
 			}
 		}
 	}
-	
-	$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/mark&amp;class_id=" . $class_id;
+	$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/roll-call&amp;class_id=" . $class_id;
 	
 	$generate_page = nv_generate_page( $base_url, $all_page, $search['per_page'], $search['page'] );
 	//p($generate_page);
 	$xtpl->assign( 'PAGE_GEN', $generate_page );
-	
 	$xtpl->assign( 'CLASS', $class );
 	$vnp_content = '';
 	$xtpl->parse( 'main' );
@@ -114,13 +127,13 @@ else
 		$search['page'] = $nv_Request->get_int( 'page', 'get', 0 );
 	}
 	
-	$xtpl = new XTemplate( "required_mark_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
+	$xtpl = new XTemplate( "required_roll_call_class.tpl", NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $module_file );
 	$xtpl->assign( 'LANG', $lang_module );
 	$xtpl->assign( 'GLANG', $lang_global );
 	
 	
 	$globalTax['term'][0] = array('term_id' => 0, 'term_name' => $lang_module['select_term']);
-	$_link = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/mark&amp;term_id=";
+	$_link = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/roll-call&amp;term_id=";
 	$onchange = 'onchange="top.location.href=\'' . $_link . '\'+this.options[this.selectedIndex].value;return;"';
 	$xtpl->assign( 'TERM_SLB', getTaxSelectBox( $globalTax['term'], 'term_id', $term_id, NULL, 'term_id', 'term_name', $onchange ) );
 	
@@ -151,7 +164,7 @@ else
 	}
 	else $_s = '';
 	
-	$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/mark&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;term_id=" . $search['term_id'] . "&amp;number_student=" . $search['number_student'] . "&amp;enter_mark=" . $search['enter_mark'] . "&amp;status=" . $search['status'] . "&amp;q=" . $search['q'];
+	$base_url = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/roll-call&amp;search=1&amp;per_page=" . $search['per_page'] . "&amp;term_id=" . $search['term_id'] . "&amp;number_student=" . $search['number_student'] . "&amp;enter_mark=" . $search['enter_mark'] . "&amp;status=" . $search['status'] . "&amp;q=" . $search['q'];
 	
 	$sql = "SELECT SQL_CALC_FOUND_ROWS * FROM `" . NV_PREFIXLANG . "_" . $module_data . "_class` WHERE ( `teacher_id`='" . $userData['teacher_id'] . "' OR `teacher_id` REGEXP '^" . $userData['teacher_id'] . "\\\,' OR `teacher_id` REGEXP '\\\," . $userData['teacher_id'] . "\\\,' OR `teacher_id` REGEXP '\\\," . $userData['teacher_id'] . "\$')" . $_s . " LIMIT " . $search['page'] . "," . $search['per_page'];
 	
@@ -165,15 +178,15 @@ else
 		$i = 1;
 		while( $row = $db->sql_fetchrow( $result ) )
 		{
-			if( $row['enter_mark'] == 1 || $row['enter_mark'] == 0 )
+			if( 1 )
 			{
-				$title = 'Nhập điểm';
+				$title = 'Điểm danh';
 			}
-			else $title = 'Xem điểm';
+			else $title = 'Điểm danh';
 			$row['label'] = $title;
 			$array_status = array( $lang_module['deactive'], $lang_module['active'] );
 			$row['class'] = ( ++$i % 2 ) ? " class=\"second\"" : "";
-			$row['url_enter_mark'] = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/mark&amp;class_id=" . $row['class_id'];
+			$row['url_enter_roll_call'] = NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $op . "/roll-call&amp;class_id=" . $row['class_id'];
 			
 			$row['term'] = $globalTax['term'][$row['term_id']]['term_name'];
 			$_subjectID = explode( ',', $row['subject_id'] );
@@ -207,7 +220,7 @@ else
 	$xtpl->assign( 'NV_OP_VARIABLE', NV_OP_VARIABLE );
 	$xtpl->assign( 'NV_NAME_VARIABLE', NV_NAME_VARIABLE );
 	$xtpl->assign( 'MODULE_NAME', $module_name );
-	$xtpl->assign( 'OP', $op . '/mark' );
+	$xtpl->assign( 'OP', $op . '/roll-call' );
 	
 	
 	$vnp_content = '';
