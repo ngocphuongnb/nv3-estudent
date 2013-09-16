@@ -47,7 +47,7 @@
             <td><strong>{ROW.number_student}</strong></td>
             <td><strong>{ROW.class_room}</strong></td>
             <td>
-                <span class="edit_icon"><a href="{ROW.url_enter_mark}">{ROW.label}</a></span>
+                <span class="edit_icon"><a href="{ROW.url_enter_roll_call}">{ROW.label}</a></span>
             </td>
         </tr>
     </tbody>
@@ -75,5 +75,4 @@
 	height: 28px;
 }
 </style>
-
 <!-- END: main -->

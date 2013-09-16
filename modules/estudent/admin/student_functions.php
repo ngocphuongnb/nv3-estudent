@@ -14,6 +14,14 @@ $student = array_merge($_student, $student);
 $studentid = $nv_Request->get_int( 'studentid', 'post,get', 0 );
 //p($student);
 
+$base_class_id = 0;
+$student['base_class_id'] = explode(',', $student['base_class_id']);
+foreach( $student['base_class_id'] as $_base_class_id )
+{
+	if( !empty( $_base_class_id ) ) $base_class_id = $_base_class_id;
+}
+$student['base_class_id'] = $_base_class_id;
+
 $logMsg = array();
 
 if( $studentid )

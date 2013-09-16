@@ -22,16 +22,16 @@ $vnp_content = '';
 if($userData['type'] == 'teacher')
 {
 	$action = ( isset($array_op[1]) && !empty($array_op[1]) ) ? $array_op[1] : '';
-	if( !empty($action) && in_array( $action, array('time-table', 'term-class', 'base-class', 'term', 'mark') ) )
+	if( !empty($action) && in_array( $action, array('time-table', 'term-class', 'base-class', 'term', 'mark', 'roll-call', 'subject') ) )
 	{
 		$menu = array();
 		if( $userData['teacher_type'] == 3 || $userData['teacher_type'] == 2 )
 		{
 			define('IS_DEAN', true);
-			$menu['time-table'] = array(	'title' => $lang_module['set_time_table'],
+			/*$menu['time-table'] = array(	'title' => $lang_module['set_time_table'],
 													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/time-table/',
 													'active' => ''
-												);
+												);*/
 			$menu['term-class'] = array(	'title' => $lang_module['class_management'],
 													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/term-class/',
 													'active' => ''
@@ -40,12 +40,20 @@ if($userData['type'] == 'teacher')
 													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/base-class/',
 													'active' => ''
 												);
+			$menu['subject'] = array(	'title' => $lang_module['subject_management'],
+													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/subject/',
+													'active' => ''
+												);
 		}
 		if( $userData['teacher_type'] == 3 || $userData['teacher_type'] == 2 || $userData['teacher_type'] == 1 )
 		{
 			define('IS_TEACHER', true);
 			$menu['mark'] = array(	'title' => $lang_module['class_mark'],
 													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/mark/',
+													'active' => ''
+												);
+			$menu['roll-call'] = array(	'title' => $lang_module['roll_call'],
+													'link' => NV_BASE_SITEURL . 'index.php?' . NV_NAME_VARIABLE . "=" . $module_name . '&amp;' . NV_OP_VARIABLE . '=manage/roll-call/',
 													'active' => ''
 												);
 		}

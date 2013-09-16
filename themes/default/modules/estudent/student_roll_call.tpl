@@ -1,20 +1,23 @@
 <!-- BEGIN: main -->
-<a href="javascript:SentMark({CLASS.class_id}); return false;" class="vnp-button">Xác nhận gửi điểm</a>
 <table class="tab1">
-	<caption>Nhập điểm cho lớp {CLASS.class_name} - {CLASS.year}</caption>
+	<caption>
+    	Thông tin điểm danh
+   	</caption>
     <thead>
     	<tr>
             <td>{LANG.class_name}</td>
-            <td>Điểm quá trình(mỗi điểm cách nhau dấu - )</td>
-            <td>Điểm cuối kì</td>
-      	</tr>
+            <td>Môn học</td>
+            <td>Số buổi nghỉ</td>
+            <td>{LANG.status}</td>
+       	</tr>
     </thead>
     <!-- BEGIN: loop -->
     <tbody class="{ROW.class}">
         <tr>
-            <td style="width:150px"><strong>{ROW.student_name}</strong></td>
-            <td style="width:150px">{ROW.time_mark}</strong></td>
-            <td style="width:150px">{ROW.end_mark}</strong></td>
+            <td style="width:150px"><strong>{ROW.class_name}</strong></td>
+             <td style="width:150px"><strong>{ROW.subject_name}</strong></td>
+            <td style="width:150px"><strong>{ROW.miss_class}</strong> <div class="tool-tip">{ROW.miss_class_desc}</div></td>
+            <td style="width:150px"><strong>{ROW.test_status}</strong></td>
         </tr>
     </tbody>
     <!-- END: loop -->
