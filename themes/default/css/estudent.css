@@ -204,3 +204,22 @@ span.row strong {
 .vnp-u .remove:hover, .vnp-edit:hover {
 	background-color: rgba(255,0,0,.25)
 }
+.label-success, .badge-success {
+background-color: #468847;
+}
+.label-warning, .badge-warning {
+background-color: #f89406;
+}
+.vnp-info {
+	width: 100%;
+}
+.vnp-label {
+	padding: 5px 10px;
+	line-height: 20px;
+	margin: 5px 0;
+	display: block;
+	clear: both
+}
+.label-info, .badge-info {
+background-color: #3a87ad;
+}
